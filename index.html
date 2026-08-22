@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>SoundCloud Playlist Cross-Finder</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    h1 { color: #f97316; }
+    .card { background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); margin-bottom: 20px; }
+    input[type="text"] { width: 100%; padding: 10px; margin: 8px 0; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 6px; box-sizing: border-box; }
+    .input-group { display: flex; gap: 10px; align-items: center; margin: 8px 0; }
+    .input-group input { flex: 1; }
+    button { background: #f97316; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; }
+    button:hover { background: #ea580c; }
+    .add-btn { background: #10b981; width: auto; padding: 10px 25px; font-size: 18px; }
+    .add-btn:hover { background: #059669; }
+    .remove-btn { background: #ef4444; width: auto; padding: 8px 15px; font-size: 14px; }
+    .remove-btn:hover { background: #dc2626; }
+    .controls { display: flex; gap: 10px; margin-top: 15px; }
+    .controls button { flex: 1; font-size: 18px; }
+    pre { background: #0f172a; padding: 15px; border-radius: 6px; overflow-x: auto; color: #38bdf8; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #334155; font-size: 14px; }
+    th { color: #f97316; }
+    td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    td:hover { white-space: normal; background: rgba(249, 115, 22, 0.1); word-break: break-word; }
+    a { color: #38bdf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <h1>SoundCloud Cross-Finder</h1>
+  <p>Discover which playlists contain multiple tracks from your collection.</p>
+  <p style="font-size: 13px; color: #cbd5e1; margin-top: 5px;">💡 Tip: Works best with niche/indie tracks (under 5M plays). Very popular tracks may return limited results due to SoundCloud API constraints.</p>
+
+  <div class="card">
+    <h3>Input SoundCloud Tracks</h3>
+    <div id="inputs">
+      <input type="text" placeholder="Paste SoundCloud track URL (e.g., https://soundcloud.com/artist/song-name)" value="">
+      <input type="text" placeholder="Paste SoundCloud track URL (e.g., https://soundcloud.com/artist/song-name)" value="">
+    </div>
+    <div class="controls">
+      <button class="add-btn" onclick="addTrackInput()">+ Add Track</button>
+      <button onclick="startSearch()">Run Cross-Search</button>
+    </div>
+  </div>
+
+  <div class="card" id="status-card" style="display:none;">
+    <h3>Live Status</h3>
+    <pre id="log">Initializing...</pre>
+  </div>
+
+  <div class="card" id="results-card" style="display:none;">
+    <h3 id="intersection-title">Results</h3>
+    <div id="results-content"></div>
+  </div>
+
+<script>
+  // Clear any cached values on load
+  window.addEventListener('load', function() {
+    const inputs = document.querySelectorAll('#inputs input[type="text"]');
+    inputs.forEach(input => {
+      input.value = '';
+    });
+  });
+
+  let trackCount = 2;
+
+  function addTrackInput() {
+    trackCount++;
+    const inputsDiv = document.getElementById('inputs');
+    const newInput = document.createElement('div');
+    newInput.className = 'input-group';
+    newInput.innerHTML = `
+      <input type="text" placeholder="Track URL ${trackCount}">
+      <button class="remove-btn" onclick="this.parentElement.remove(); trackCount--;">✕</button>
+    `;
+    inputsDiv.appendChild(newInput);
+  }
+
+  async function startSearch() {
+    const inputs = document.querySelectorAll('#inputs input[type="text"]');
+    const trackUrls = Array.from(inputs).map(i => i.value.trim()).filter(Boolean);
+
+    if (trackUrls.length === 0) {
+      alert("Please enter at least one track URL.");
+      return;
+    }
+
+    document.getElementById('status-card').style.display = 'block';
+    document.getElementById('results-card').style.display = 'none';
+    const logEl = document.getElementById('log');
+    logEl.textContent = "Connecting to server...\n";
+
+    // Scroll to status card
+    setTimeout(() => {
+      document.getElementById('status-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+
+    try {
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ trackUrls })
+      });
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      let resultsData = {
+        common: [],
+        partial: [],
+        trackCount: 0
+      };
+
+      let buffer = ''; // Buffer for incomplete lines
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+
+        // Split by double newline to separate events
+        const events = buffer.split('\n\n');
+
+        // Keep the last incomplete event in the buffer
+        buffer = events.pop() || '';
+
+        for (let event of events) {
+          event = event.trim();
+          if (!event || !event.startsWith('data: ')) continue;
+
+          try {
+            // Extract JSON after "data: "
+            const jsonStr = event.replace(/^data:\s*/, '').trim();
+            const data = JSON.parse(jsonStr);
+
+            if (data.status === 'progress') {
+              logEl.textContent += data.message + '\n';
+              logEl.scrollTop = logEl.scrollHeight;
+            } else if (data.status === 'results-meta') {
+              resultsData.common = [];
+              resultsData.partial = [];
+              resultsData.trackCount = data.resolvedTracksCount;
+            } else if (data.status === 'results-common') {
+              if (Array.isArray(data.items)) {
+                resultsData.common.push(...data.items);
+              }
+            } else if (data.status === 'results-partial') {
+              if (Array.isArray(data.items)) {
+                resultsData.partial.push(...data.items);
+              }
+            } else if (data.status === 'complete') {
+              setTimeout(() => {
+                renderResults(resultsData);
+              }, 100);
+            } else if (data.status === 'error') {
+              logEl.textContent += `❌ Error: ${data.message}\n`;
+            }
+          } catch (parseError) {
+            console.error('Parse error:', parseError);
+          }
+        }
+      }
+
+      // Process any remaining buffer
+      if (buffer.trim().startsWith('data: ')) {
+        try {
+          const jsonStr = buffer.replace(/^data:\s*/, '').trim();
+          const data = JSON.parse(jsonStr);
+          if (data.status === 'complete') {
+            logEl.textContent += `\n✅ DONE! Rendering final results...\n`;
+            setTimeout(() => {
+              renderResults(resultsData);
+            }, 100);
+          }
+        } catch (e) {
+          console.error('Final buffer parse error:', e);
+        }
+      }
+
+      // Final safeguard - if we have results but didn't render, render them now
+      if (resultsData.common.length > 0 || resultsData.partial.length > 0) {
+        setTimeout(() => {
+          if (document.getElementById('results-card').style.display === 'none') {
+            renderResults(resultsData);
+          }
+        }, 500);
+      }
+    } catch (e) {
+      logEl.textContent += `❌ Network Error: ${e.message}\n`;
+    }
+  }
+
+  function renderResults(data) {
+    document.getElementById('results-card').style.display = 'block';
+    const container = document.getElementById('results-content');
+
+    let html = `<h4>🎯 Complete Intersection (${data.common.length} playlists contain ALL ${data.trackCount} tracks):</h4>`;
+    if (data.common.length > 0) {
+      html += `<table><tr><th>Title</th><th>Curator</th><th>Link</th></tr>`;
+      data.common.forEach(p => {
+        html += `<tr><td title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</td><td>${escapeHtml(p.user || 'Unknown')}</td><td><a href="${p.url}" target="_blank">Open</a></td></tr>`;
+      });
+      html += `</table>`;
+    } else {
+      html += `<p>No playlists contain all selected tracks together.</p>`;
+    }
+
+    html += `<h4 style="margin-top: 20px;">⚡ Partial Matches (${data.partial.length} playlists feature some tracks):</h4>`;
+    if (data.partial.length > 0) {
+      html += `<table><tr><th>Title</th><th>Matches</th><th>Curator</th><th>Link</th></tr>`;
+      data.partial.forEach(p => {
+        html += `<tr><td title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</td><td><b>${p.count}</b> / ${data.trackCount}</td><td>${escapeHtml(p.user || 'Unknown')}</td><td><a href="${p.url}" target="_blank">Open</a></td></tr>`;
+      });
+      html += `</table>`;
+    } else {
+      html += `<p>No partial overlaps found.</p>`;
+    }
+
+    container.innerHTML = html;
+
+    // Scroll to results
+    setTimeout(() => {
+      document.getElementById('results-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+</script>
+
+</body>
+</html>
