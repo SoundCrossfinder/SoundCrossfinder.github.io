@@ -192,8 +192,11 @@
 
     <div class="card" id="status-card" style="display:none;">
       <h3>
-        <span class="status-header-title">⚡ Live Status</span>
-        <span class="pulse-dot" id="status-pulse" title="Active Connection"></span>
+        <span class="status-header-title">
+          <span class="pulse-dot" id="status-pulse" title="Active Connection"></span>
+          <span>⚡ Live Status</span>
+        </span>
+        <button class="card-remove-btn" id="cancel-btn" onclick="cancelSearch()">⏹️ Cancel Search</button>
       </h3>
       <pre id="log">Initializing...</pre>
     </div>
@@ -215,6 +218,14 @@
 
 <script>
   let trackCount = 3;
+  let activeAbortController = null;
+
+  function cancelSearch() {
+    if (activeAbortController) {
+      activeAbortController.abort();
+      activeAbortController = null;
+    }
+  }
 
   // Outgoing fetch wrapper with 40-second abort timeout protection
   async function fetchWithTimeout(resource, options = {}) {
@@ -359,6 +370,12 @@
       return;
     }
 
+    // Cancel any previous active search request
+    if (activeAbortController) {
+      activeAbortController.abort();
+    }
+    activeAbortController = new AbortController();
+
     // Update Shareable URL params
     const urlParams = new URLSearchParams();
     trackUrls.forEach((url, index) => {
@@ -368,7 +385,9 @@
     window.history.pushState(null, '', newRelativePathQuery);
 
     document.getElementById('status-card').style.display = 'block';
+    document.getElementById('cancel-btn').style.display = 'inline-block';
     document.getElementById('results-card').style.display = 'none';
+    
     const logEl = document.getElementById('log');
     logEl.textContent = "Connecting to server...\n";
 
@@ -382,12 +401,14 @@
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ trackUrls })
+          body: JSON.stringify({ trackUrls }),
+          signal: activeAbortController.signal
         }
       );
 
       if (!response.ok) {
         logEl.textContent += `❌ HTTP Error: ${response.status} ${response.statusText}\n`;
+        document.getElementById('cancel-btn').style.display = 'none';
         return;
       }
 
@@ -409,7 +430,6 @@
           eventBlock = eventBlock.trim();
           if (!eventBlock) continue;
 
-          // Split multi-line event blocks safely
           const lines = eventBlock.split('\n');
           for (let line of lines) {
             line = line.trim();
@@ -420,7 +440,14 @@
               const data = JSON.parse(jsonStr);
 
               if (data.status === 'progress') {
-                logEl.textContent += data.message + '\n';
+                // If message is a real-time queue update, update cleanly
+                if (data.message.includes('Position #')) {
+                  const currentLogs = logEl.textContent.split('\n').filter(l => !l.includes('Position #'));
+                  currentLogs.push(data.message);
+                  logEl.textContent = currentLogs.join('\n') + '\n';
+                } else {
+                  logEl.textContent += data.message + '\n';
+                }
                 logEl.scrollTop = logEl.scrollHeight;
               } else if (data.status === 'results-meta') {
                 resultsData.common = [];
@@ -433,10 +460,12 @@
               } else if (data.status === 'complete') {
                 logEl.textContent += `\n✅ DONE! Rendering final results...\n`;
                 logEl.scrollTop = logEl.scrollHeight;
+                document.getElementById('cancel-btn').style.display = 'none';
                 setTimeout(() => { renderResults(resultsData); }, 100);
               } else if (data.status === 'error') {
                 logEl.textContent += `❌ Error: ${data.message}\n`;
                 logEl.scrollTop = logEl.scrollHeight;
+                document.getElementById('cancel-btn').style.display = 'none';
               }
             } catch (parseError) {
               console.error('Parse error:', parseError);
@@ -456,6 +485,7 @@
             if (data.status === 'complete') {
               logEl.textContent += `\n✅ DONE! Rendering final results...\n`;
               logEl.scrollTop = logEl.scrollHeight;
+              document.getElementById('cancel-btn').style.display = 'none';
               setTimeout(() => { renderResults(resultsData); }, 100);
             }
           } catch (e) {
@@ -472,8 +502,15 @@
         }, 500);
       }
     } catch (e) {
-      logEl.textContent += `❌ Network Error: ${e.message}\n`;
+      document.getElementById('cancel-btn').style.display = 'none';
+      if (e.name === 'AbortError') {
+        logEl.textContent += `\n⏹️ Search canceled. Server queue slot released.\n`;
+      } else {
+        logEl.textContent += `❌ Network Error: ${e.message}\n`;
+      }
       logEl.scrollTop = logEl.scrollHeight;
+    } finally {
+      activeAbortController = null;
     }
   }
 
@@ -482,7 +519,6 @@
     document.getElementById('results-card').style.display = 'block';
     const container = document.getElementById('results-content');
 
-    // Comprehensive fallback for SoundCloud like/favorite count properties
     const getLikes = p => Number(p.likes_count ?? p.favoritings_count ?? p.likes ?? p.likesCount ?? p.like_count ?? p.favorites_count ?? 0);
 
     // Sort complete matches: Highest likes first
