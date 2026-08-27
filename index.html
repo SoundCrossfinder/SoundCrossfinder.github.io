@@ -117,6 +117,7 @@
     th { color: #f97316; background: rgba(249, 115, 22, 0.1); }
     td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     td:hover { white-space: normal; background: #1e293b; word-break: break-word; }
+    .likes-col { color: #f43f5e; font-weight: 600; }
     
     a { color: #38bdf8; text-decoration: none; }
     a:hover { text-decoration: underline; color: #7dd3fc; }
@@ -347,6 +348,7 @@
     const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
     window.history.pushState(null, '', newRelativePathQuery);
 
+    // Make Live Status visible again on new search
     document.getElementById('status-card').style.display = 'block';
     document.getElementById('results-card').style.display = 'none';
     const logEl = document.getElementById('log');
@@ -436,14 +438,36 @@
   }
 
   function renderResults(data) {
+    // Hide status card once search is complete
+    document.getElementById('status-card').style.display = 'none';
     document.getElementById('results-card').style.display = 'block';
     const container = document.getElementById('results-content');
 
+    // Safe accessor for likes count across various potential field names
+    const getLikes = p => p.likes ?? p.likes_count ?? p.likesCount ?? 0;
+
+    // Sort complete matches: Highest likes first
+    data.common.sort((a, b) => getLikes(b) - getLikes(a));
+
+    // Sort partial matches: Highest match count first, then highest likes first
+    data.partial.sort((a, b) => {
+      if ((b.count || 0) !== (a.count || 0)) {
+        return (b.count || 0) - (a.count || 0);
+      }
+      return getLikes(b) - getLikes(a);
+    });
+
     let html = `<h4 style="color: #10b981;">🏆 Complete Matches (${data.common.length} playlists contain ALL ${data.trackCount} tracks):</h4>`;
     if (data.common.length > 0) {
-      html += `<table><tr><th>Title</th><th>Curator</th><th>Link</th></tr>`;
+      html += `<table><tr><th>Title</th><th>Curator</th><th>Likes</th><th>Link</th></tr>`;
       data.common.forEach(p => {
-        html += `<tr><td title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</td><td>${escapeHtml(p.user || 'Unknown')}</td><td><a href="${p.url}" target="_blank">Open ↗</a></td></tr>`;
+        const likesFormatted = getLikes(p).toLocaleString();
+        html += `<tr>
+          <td title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</td>
+          <td>${escapeHtml(p.user || 'Unknown')}</td>
+          <td class="likes-col">❤️ ${likesFormatted}</td>
+          <td><a href="${p.url}" target="_blank">Open ↗</a></td>
+        </tr>`;
       });
       html += `</table>`;
     } else {
@@ -452,9 +476,16 @@
 
     html += `<h4 style="margin-top: 25px; color: #facc15;">⚡ Partial Matches (${data.partial.length} playlists feature some tracks):</h4>`;
     if (data.partial.length > 0) {
-      html += `<table><tr><th>Title</th><th>Matches</th><th>Curator</th><th>Link</th></tr>`;
+      html += `<table><tr><th>Title</th><th>Matches</th><th>Likes</th><th>Curator</th><th>Link</th></tr>`;
       data.partial.forEach(p => {
-        html += `<tr><td title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</td><td><b>${p.count}</b> / ${data.trackCount}</td><td>${escapeHtml(p.user || 'Unknown')}</td><td><a href="${p.url}" target="_blank">Open ↗</a></td></tr>`;
+        const likesFormatted = getLikes(p).toLocaleString();
+        html += `<tr>
+          <td title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</td>
+          <td><b>${p.count}</b> / ${data.trackCount}</td>
+          <td class="likes-col">❤️ ${likesFormatted}</td>
+          <td>${escapeHtml(p.user || 'Unknown')}</td>
+          <td><a href="${p.url}" target="_blank">Open ↗</a></td>
+        </tr>`;
       });
       html += `</table>`;
     } else {
