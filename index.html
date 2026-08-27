@@ -134,7 +134,7 @@
     
     <!-- Hero Banner Image -->
     <div class="hero-banner">
-      <h1>🎧 SoundCloud Cross-Finder</h1>
+      <h1>🎧 SoundCloud Playlist Cross-Finder</h1>
     </div>
 
     <p class="subtitle">Discover which playlists contain multiple tracks from your collection.</p>
@@ -146,19 +146,19 @@
         <!-- 3 Default Input Slots -->
         <div class="input-wrapper">
           <div class="input-group">
-            <input type="text" placeholder="Paste SoundCloud track URL 1" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+            <input type="text" placeholder="Paste SoundCloud track URL 1" oninput="handleInputChange(this)">
           </div>
           <div class="preview-container"></div>
         </div>
         <div class="input-wrapper">
           <div class="input-group">
-            <input type="text" placeholder="Paste SoundCloud track URL 2" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+            <input type="text" placeholder="Paste SoundCloud track URL 2" oninput="handleInputChange(this)">
           </div>
           <div class="preview-container"></div>
         </div>
         <div class="input-wrapper">
           <div class="input-group">
-            <input type="text" placeholder="Paste SoundCloud track URL 3" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+            <input type="text" placeholder="Paste SoundCloud track URL 3" oninput="handleInputChange(this)">
           </div>
           <div class="preview-container"></div>
         </div>
@@ -215,7 +215,7 @@
       if (!res.ok) throw new Error('Track not found');
       const data = await res.json();
 
-      // Hide raw URL box and replace with Track Card
+      // Hide raw URL box and replace with Track Card instantly
       inputGroup.style.display = 'none';
       previewEl.innerHTML = `
         <div class="track-card">
@@ -240,10 +240,8 @@
     const totalWrappers = document.querySelectorAll('#inputs .input-wrapper').length;
 
     if (totalWrappers > 3) {
-      // If more than 3 slots exist, remove the slot completely
       wrapper.remove();
     } else {
-      // If 3 or fewer slots exist, clear card & show empty URL box
       const inputGroup = wrapper.querySelector('.input-group');
       const previewEl = wrapper.querySelector('.preview-container');
       const inputEl = wrapper.querySelector('input[type="text"]');
@@ -274,7 +272,7 @@
     wrapper.className = 'input-wrapper';
     wrapper.innerHTML = `
       <div class="input-group">
-        <input type="text" placeholder="Paste SoundCloud track URL ${trackCount}" value="${escapeHtml(initialValue)}" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+        <input type="text" placeholder="Paste SoundCloud track URL ${trackCount}" value="${escapeHtml(initialValue)}" oninput="handleInputChange(this)">
         <button class="remove-btn" onclick="handleRemoveRawInput(this)">✕</button>
       </div>
       <div class="preview-container"></div>
@@ -299,7 +297,6 @@
       inputsDiv.innerHTML = '';
       trackCount = 0;
 
-      // Ensure at least 3 input wrappers exist
       const slotsToCreate = Math.max(3, trackUrls.length);
       for (let idx = 0; idx < slotsToCreate; idx++) {
         const val = trackUrls[idx] || '';
