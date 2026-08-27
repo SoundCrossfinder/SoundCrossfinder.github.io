@@ -2361,13 +2361,6 @@
           timeouts: 0
         };
 
-      appendLog(
-        `📊 API diagnostics: ` +
-        `${resultsData.diagnostics.totalRequests || 0} requests, ` +
-        `${resultsData.diagnostics.rateLimited || 0} rate limits, ` +
-        `${resultsData.diagnostics.timeouts || 0} timeouts.`
-      );
-
       return;
     }
 
