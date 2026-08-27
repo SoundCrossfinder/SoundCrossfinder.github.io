@@ -44,7 +44,9 @@
       box-sizing: border-box;
     }
     
-    .hero-banner h1 { margin: 0; color: #f97316; font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+    .hero-banner h1 { margin: 0; font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+    .hero-banner h1 a { color: #f97316; text-decoration: none; transition: opacity 0.2s; }
+    .hero-banner h1 a:hover { opacity: 0.9; }
     
     .subtitle { font-size: 1.1rem; margin-top: 10px; color: #e2e8f0; }
     .tip { font-size: 13px; color: #94a3b8; margin-top: 5px; background: rgba(30, 41, 59, 0.5); padding: 10px; border-radius: 6px; border-left: 3px solid #f97316;}
@@ -134,7 +136,7 @@
     
     <!-- Hero Banner Image -->
     <div class="hero-banner">
-      <h1>🎧 SoundCloud Playlist Cross-Finder</h1>
+      <h1><a href="https://soundcrossfinder.github.io/">🎧 SoundCloud Playlist Cross-Finder</a></h1>
     </div>
 
     <p class="subtitle">Discover which playlists contain multiple tracks from your collection.</p>
@@ -192,6 +194,21 @@
 <script>
   let trackCount = 3;
 
+  // Outgoing fetch wrapper with 40-second abort timeout protection
+  async function fetchWithTimeout(resource, options = {}) {
+    const { timeout = 40000 } = options;
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    try {
+      const response = await fetch(resource, { ...options, signal: controller.signal });
+      clearTimeout(id);
+      return response;
+    } catch (err) {
+      clearTimeout(id);
+      throw err;
+    }
+  }
+
   // Track Preview via SoundCloud oEmbed
   async function handleInputChange(inputEl) {
     const wrapper = inputEl.closest('.input-wrapper');
@@ -211,7 +228,8 @@
     previewEl.innerHTML = '<div class="preview-loading">⏳ Loading track info...</div>';
 
     try {
-      const res = await fetch(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(url)}`);
+      // Outgoing SoundCloud request with 40-second timeout guard
+      const res = await fetchWithTimeout(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(url)}`, { timeout: 40000 });
       if (!res.ok) throw new Error('Track not found');
       const data = await res.json();
 
@@ -230,7 +248,11 @@
         </div>
       `;
     } catch (e) {
-      previewEl.innerHTML = '<div class="preview-error">⚠️ Could not load track preview</div>';
+      if (e.name === 'AbortError') {
+        previewEl.innerHTML = '<div class="preview-error">⚠️ SoundCloud request timed out (40s)</div>';
+      } else {
+        previewEl.innerHTML = '<div class="preview-error">⚠️ Could not load track preview</div>';
+      }
     }
   }
 
