@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -79,764 +81,809 @@
     content="https://raw.githubusercontent.com/SoundCrossfinder/SoundCrossfinder.github.io/refs/heads/main/favicon.png"
   >
 
-  <title>SoundCloud Playlist Cross-Finder</title>
+  <title>
+    SoundCloud Playlist Cross-Finder
+  </title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
 
-    body {
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+<style>
 
-      background: #0f172a;
-      color: #f8fafc;
+* {
+  box-sizing: border-box;
+}
 
-      max-width: 800px;
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 
-      margin: 40px auto;
+  background: #0f172a;
 
-      padding: 0 20px;
+  color: #f8fafc;
 
-      display: flex;
-      flex-direction: column;
+  max-width: 800px;
 
-      min-height: 90vh;
-    }
+  margin: 40px auto;
 
-    .content-wrapper {
-      flex: 1;
-    }
+  padding: 0 20px;
 
-    /* =====================================================
-       HERO
-    ===================================================== */
+  display: flex;
 
-    .hero-banner {
-      width: 100%;
-      height: 180px;
+  flex-direction: column;
 
-      background-image:
-        linear-gradient(
-          rgba(15, 23, 42, 0.3),
-          rgba(15, 23, 42, 0.9)
-        ),
-        url(
-          'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1000&q=80'
-        );
+  min-height: 90vh;
+}
 
-      background-size: cover;
-      background-position: center;
+.content-wrapper {
+  flex: 1;
+}
 
-      border-radius: 12px;
 
-      margin-bottom: 25px;
+/* =====================================================
+   HERO
+===================================================== */
 
-      box-shadow:
-        0 4px 10px rgba(0,0,0,0.5);
+.hero-banner {
+  width: 100%;
 
-      display: flex;
+  height: 180px;
 
-      align-items: flex-end;
+  background-image:
+    linear-gradient(
+      rgba(15, 23, 42, 0.3),
+      rgba(15, 23, 42, 0.9)
+    ),
+    url(
+      'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1000&q=80'
+    );
 
-      padding: 20px;
-    }
+  background-size: cover;
 
-    .hero-banner h1 {
-      margin: 0;
+  background-position: center;
 
-      font-size: 2.2rem;
+  border-radius: 12px;
 
-      text-shadow:
-        2px 2px 4px rgba(0,0,0,0.8);
-    }
+  margin-bottom: 25px;
 
-    .hero-banner h1 a {
-      color: #f97316;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.5);
 
-      text-decoration: none;
-    }
+  display: flex;
 
-    .hero-banner h1 a:hover {
-      opacity: 0.9;
-    }
+  align-items: flex-end;
 
-    .subtitle {
-      font-size: 1.1rem;
+  padding: 20px;
+}
 
-      margin-top: 10px;
-    }
+.hero-banner h1 {
+  margin: 0;
 
-    .tip {
-      font-size: 13px;
+  font-size: 2.2rem;
 
-      color: #94a3b8;
+  text-shadow:
+    2px 2px 4px rgba(0,0,0,0.8);
+}
 
-      margin-top: 5px;
+.hero-banner h1 a {
+  color: #f97316;
 
-      background:
-        rgba(30, 41, 59, 0.5);
+  text-decoration: none;
+}
 
-      padding: 10px;
+.hero-banner h1 a:hover {
+  opacity: 0.9;
+}
 
-      border-radius: 6px;
+.subtitle {
+  font-size: 1.1rem;
 
-      border-left:
-        3px solid #f97316;
-    }
+  margin-top: 10px;
+}
 
-    /* =====================================================
-       CARDS
-    ===================================================== */
+.tip {
+  font-size: 13px;
 
-    .card {
-      background: #1e293b;
+  color: #94a3b8;
 
-      padding: 25px;
+  margin-top: 5px;
 
-      border-radius: 12px;
+  background:
+    rgba(30, 41, 59, 0.5);
 
-      box-shadow:
-        0 4px 6px rgba(0,0,0,0.3);
+  padding: 10px;
 
-      margin-bottom: 20px;
-    }
+  border-radius: 6px;
 
-    .card h3 {
-      margin-top: 0;
+  border-left:
+    3px solid #f97316;
+}
 
-      color: #e2e8f0;
 
-      display: flex;
+/* =====================================================
+   CARDS
+===================================================== */
 
-      align-items: center;
+.card {
+  background: #1e293b;
 
-      justify-content: space-between;
+  padding: 25px;
 
-      gap: 8px;
-    }
+  border-radius: 12px;
 
-    /* =====================================================
-       INPUTS
-    ===================================================== */
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.3);
 
-    .input-wrapper {
-      margin-bottom: 12px;
-    }
+  margin-bottom: 20px;
+}
 
-    .input-group {
-      display: flex;
+.card h3 {
+  margin-top: 0;
 
-      gap: 10px;
+  color: #e2e8f0;
 
-      align-items: center;
-    }
+  display: flex;
 
-    .input-group input {
-      flex: 1;
+  align-items: center;
 
-      margin: 0;
-    }
+  justify-content: space-between;
 
-    input[type="text"] {
-      width: 100%;
+  gap: 8px;
+}
 
-      padding: 12px;
 
-      background: #0f172a;
+/* =====================================================
+   INPUTS
+===================================================== */
 
-      border:
-        1px solid #334155;
+.input-wrapper {
+  margin-bottom: 12px;
+}
 
-      color: white;
+.input-group {
+  display: flex;
 
-      border-radius: 6px;
+  gap: 10px;
 
-      font-size: 14px;
-    }
+  align-items: center;
+}
 
-    input[type="text"]:focus {
-      outline: none;
+.input-group input {
+  flex: 1;
 
-      border-color: #f97316;
+  margin: 0;
+}
 
-      box-shadow:
-        0 0 0 2px
-        rgba(249,115,22,0.2);
-    }
+input[type="text"] {
+  width: 100%;
 
-    /* =====================================================
-       TRACK PREVIEW
-    ===================================================== */
+  padding: 12px;
 
-    .track-card {
-      display: flex;
+  background: #0f172a;
 
-      align-items: center;
+  border:
+    1px solid #334155;
 
-      justify-content: space-between;
+  color: white;
 
-      gap: 12px;
+  border-radius: 6px;
 
-      background: #0f172a;
+  font-size: 14px;
+}
 
-      padding: 10px 14px;
+input[type="text"]:focus {
+  outline: none;
 
-      border-radius: 8px;
+  border-color: #f97316;
 
-      border:
-        1px solid #f97316;
+  box-shadow:
+    0 0 0 2px
+    rgba(249,115,22,0.2);
+}
 
-      animation:
-        fadeIn 0.2s ease-in-out;
-    }
 
-    .track-main-info {
-      display: flex;
+/* =====================================================
+   TRACK PREVIEW
+===================================================== */
 
-      align-items: center;
+.track-card {
+  display: flex;
 
-      gap: 12px;
+  align-items: center;
 
-      flex: 1;
+  justify-content: space-between;
 
-      overflow: hidden;
-    }
+  gap: 12px;
 
-    .track-thumb {
-      width: 44px;
-      height: 44px;
+  background: #0f172a;
 
-      border-radius: 6px;
+  padding: 10px 14px;
 
-      object-fit: cover;
+  border-radius: 8px;
 
-      background: #1e293b;
+  border:
+    1px solid #f97316;
 
-      flex-shrink: 0;
-    }
+  animation:
+    fadeIn 0.2s ease-in-out;
+}
 
-    .track-details {
-      flex: 1;
+.track-main-info {
+  display: flex;
 
-      overflow: hidden;
-    }
+  align-items: center;
 
-    .track-name {
-      font-weight: 600;
+  gap: 12px;
 
-      font-size: 14px;
+  flex: 1;
 
-      color: #f8fafc;
+  overflow: hidden;
+}
 
-      white-space: nowrap;
+.track-thumb {
+  width: 44px;
 
-      overflow: hidden;
+  height: 44px;
 
-      text-overflow: ellipsis;
-    }
+  border-radius: 6px;
 
-    .track-artist {
-      font-size: 12px;
+  object-fit: cover;
 
-      color: #94a3b8;
+  background: #1e293b;
 
-      margin-top: 2px;
-    }
+  flex-shrink: 0;
+}
 
-    .preview-loading {
-      font-size: 12px;
+.track-details {
+  flex: 1;
 
-      color: #f97316;
+  overflow: hidden;
+}
 
-      margin-top: 4px;
-    }
+.track-name {
+  font-weight: 600;
 
-    .preview-error {
-      font-size: 12px;
+  font-size: 14px;
 
-      color: #ef4444;
+  color: #f8fafc;
 
-      margin-top: 4px;
-    }
+  white-space: nowrap;
 
-    /* =====================================================
-       BUTTONS
-    ===================================================== */
+  overflow: hidden;
 
-    button {
-      background: #f97316;
+  text-overflow: ellipsis;
+}
 
-      color: white;
+.track-artist {
+  font-size: 12px;
 
-      border: none;
+  color: #94a3b8;
 
-      padding: 12px 20px;
+  margin-top: 2px;
+}
 
-      font-weight: bold;
+.preview-loading {
+  font-size: 12px;
 
-      border-radius: 6px;
+  color: #f97316;
 
-      cursor: pointer;
+  margin-top: 4px;
+}
 
-      transition:
-        all 0.2s;
-    }
+.preview-error {
+  font-size: 12px;
 
-    button:hover {
-      background: #ea580c;
+  color: #ef4444;
 
-      transform:
-        translateY(-1px);
-    }
+  margin-top: 4px;
+}
 
-    button:active {
-      transform:
-        translateY(1px);
-    }
 
-    button:disabled {
-      opacity: 0.5;
+/* =====================================================
+   BUTTONS
+===================================================== */
 
-      cursor: not-allowed;
+button {
+  background: #f97316;
 
-      transform: none;
-    }
+  color: white;
 
-    .add-btn {
-      background: #10b981;
+  border: none;
 
-      padding:
-        12px 25px;
+  padding: 12px 20px;
 
-      font-size: 16px;
-    }
+  font-weight: bold;
 
-    .add-btn:hover {
-      background: #059669;
-    }
+  border-radius: 6px;
 
-    .remove-btn {
-      background: #ef4444;
+  cursor: pointer;
 
-      padding:
-        10px 15px;
+  transition:
+    all 0.2s;
+}
 
-      font-size: 14px;
-    }
+button:hover {
+  background: #ea580c;
 
-    .remove-btn:hover {
-      background: #dc2626;
-    }
+  transform:
+    translateY(-1px);
+}
 
-    .card-remove-btn {
-      background: #ef4444;
+button:active {
+  transform:
+    translateY(1px);
+}
 
-      padding:
-        8px 12px;
+button:disabled {
+  opacity: 0.5;
 
-      font-size: 13px;
+  cursor: not-allowed;
 
-      flex-shrink: 0;
-    }
+  transform: none;
+}
 
-    .card-remove-btn:hover {
-      background: #dc2626;
-    }
+.add-btn {
+  background: #10b981;
 
-    .controls {
-      display: flex;
+  padding:
+    12px 25px;
 
-      gap: 10px;
+  font-size: 16px;
+}
 
-      margin-top: 20px;
-    }
+.add-btn:hover {
+  background: #059669;
+}
 
-    .controls button {
-      flex: 1;
+.remove-btn {
+  background: #ef4444;
 
-      font-size: 16px;
-    }
+  padding:
+    10px 15px;
 
-    /* =====================================================
-       LIVE STATUS
-    ===================================================== */
+  font-size: 14px;
+}
 
-    .status-header-title {
-      display: flex;
+.remove-btn:hover {
+  background: #dc2626;
+}
 
-      align-items: center;
+.card-remove-btn {
+  background: #ef4444;
 
-      gap: 8px;
-    }
+  padding:
+    8px 12px;
 
-    .pulse-dot {
-      width: 10px;
+  font-size: 13px;
 
-      height: 10px;
+  flex-shrink: 0;
+}
 
-      background-color: #10b981;
+.card-remove-btn:hover {
+  background: #dc2626;
+}
 
-      border-radius: 50%;
+.controls {
+  display: flex;
 
-      display: inline-block;
+  gap: 10px;
 
-      animation:
-        pulse 1.5s infinite;
-    }
+  margin-top: 20px;
+}
 
-    @keyframes pulse {
-      0% {
-        transform: scale(0.95);
+.controls button {
+  flex: 1;
 
-        box-shadow:
-          0 0 0 0
-          rgba(16,185,129,0.7);
-      }
+  font-size: 16px;
+}
 
-      70% {
-        transform: scale(1);
 
-        box-shadow:
-          0 0 0 8px
-          rgba(16,185,129,0);
-      }
+/* =====================================================
+   LIVE STATUS
+===================================================== */
 
-      100% {
-        transform: scale(0.95);
+.status-header-title {
+  display: flex;
 
-        box-shadow:
-          0 0 0 0
-          rgba(16,185,129,0);
-      }
-    }
+  align-items: center;
 
-    /* =====================================================
-       QUEUE PANEL
-    ===================================================== */
+  gap: 8px;
+}
 
-    .queue-panel {
-      background: #0f172a;
+.pulse-dot {
+  width: 10px;
 
-      border:
-        1px solid #334155;
+  height: 10px;
 
-      border-radius: 8px;
+  background-color: #10b981;
 
-      padding: 15px;
+  border-radius: 50%;
 
-      margin-bottom: 15px;
-    }
+  display: inline-block;
 
-    .queue-title {
-      font-size: 14px;
+  animation:
+    pulse 1.5s infinite;
+}
 
-      font-weight: 700;
+@keyframes pulse {
 
-      margin-bottom: 12px;
+  0% {
+    transform: scale(0.95);
 
-      color: #f8fafc;
-    }
+    box-shadow:
+      0 0 0 0
+      rgba(16,185,129,0.7);
+  }
 
-    .queue-main {
-      display: flex;
+  70% {
+    transform: scale(1);
 
-      align-items: center;
+    box-shadow:
+      0 0 0 8px
+      rgba(16,185,129,0);
+  }
 
-      gap: 14px;
-    }
+  100% {
+    transform: scale(0.95);
 
-    .queue-number {
-      width: 58px;
+    box-shadow:
+      0 0 0 0
+      rgba(16,185,129,0);
+  }
 
-      height: 58px;
+}
 
-      border-radius: 50%;
 
-      background:
-        rgba(249,115,22,0.15);
+/* =====================================================
+   QUEUE PANEL
+===================================================== */
 
-      border:
-        2px solid #f97316;
+.queue-panel {
+  background: #0f172a;
 
-      display: flex;
+  border:
+    1px solid #334155;
 
-      align-items: center;
+  border-radius: 8px;
 
-      justify-content: center;
+  padding: 15px;
 
-      font-size: 23px;
+  margin-bottom: 15px;
+}
 
-      font-weight: 800;
+.queue-title {
+  font-size: 14px;
 
-      color: #f97316;
+  font-weight: 700;
 
-      flex-shrink: 0;
-    }
+  margin-bottom: 12px;
 
-    .queue-info {
-      flex: 1;
-    }
+  color: #f8fafc;
+}
 
-    .queue-message {
-      font-size: 14px;
+.queue-main {
+  display: flex;
 
-      font-weight: 700;
+  align-items: center;
 
-      color: #f8fafc;
-    }
+  gap: 14px;
+}
 
-    .queue-subtitle {
-      font-size: 12px;
+.queue-number {
+  width: 58px;
 
-      color: #94a3b8;
+  height: 58px;
 
-      margin-top: 4px;
-    }
+  border-radius: 50%;
 
-    .queue-stats {
-      display: flex;
+  background:
+    rgba(249,115,22,0.15);
 
-      gap: 8px;
+  border:
+    2px solid #f97316;
 
-      margin-top: 12px;
+  display: flex;
 
-      flex-wrap: wrap;
-    }
+  align-items: center;
 
-    .queue-stat {
-      background: #1e293b;
+  justify-content: center;
 
-      border-radius: 6px;
+  font-size: 23px;
 
-      padding: 7px 10px;
+  font-weight: 800;
 
-      font-size: 12px;
+  color: #f97316;
 
-      color: #cbd5e1;
-    }
+  flex-shrink: 0;
+}
 
-    .queue-stat b {
-      color: #f8fafc;
-    }
+.queue-info {
+  flex: 1;
+}
 
-    /* =====================================================
-       LOG
-    ===================================================== */
+.queue-message {
+  font-size: 14px;
 
-    pre {
-      background: #0f172a;
+  font-weight: 700;
 
-      padding: 15px;
+  color: #f8fafc;
+}
 
-      border-radius: 6px;
+.queue-subtitle {
+  font-size: 12px;
 
-      overflow-x: auto;
+  color: #94a3b8;
 
-      color: #38bdf8;
+  margin-top: 4px;
+}
 
-      font-size: 13px;
+.queue-stats {
+  display: flex;
 
-      border:
-        1px solid #334155;
+  gap: 8px;
 
-      max-height: 280px;
+  margin-top: 12px;
 
-      overflow-y: auto;
+  flex-wrap: wrap;
+}
 
-      white-space: pre-wrap;
+.queue-stat {
+  background: #1e293b;
 
-      word-break: break-word;
-    }
+  border-radius: 6px;
 
-    /* =====================================================
-       RESULTS
-    ===================================================== */
+  padding: 7px 10px;
 
-    table {
-      width: 100%;
+  font-size: 12px;
 
-      border-collapse: collapse;
+  color: #cbd5e1;
+}
 
-      margin-top: 15px;
+.queue-stat b {
+  color: #f8fafc;
+}
 
-      table-layout: fixed;
 
-      background: #0f172a;
+/* =====================================================
+   LOG
+===================================================== */
 
-      border-radius: 6px;
+pre {
+  background: #0f172a;
 
-      overflow: hidden;
-    }
+  padding: 15px;
 
-    th,
-    td {
-      text-align: left;
+  border-radius: 6px;
 
-      padding: 12px;
+  overflow-x: auto;
 
-      border-bottom:
-        1px solid #334155;
+  color: #38bdf8;
 
-      font-size: 14px;
-    }
+  font-size: 13px;
 
-    th {
-      color: #f97316;
+  border:
+    1px solid #334155;
 
-      background:
-        rgba(249,115,22,0.1);
-    }
+  max-height: 280px;
 
-    td {
-      overflow: hidden;
+  overflow-y: auto;
 
-      text-overflow: ellipsis;
+  white-space: pre-wrap;
 
-      white-space: nowrap;
-    }
+  word-break: break-word;
+}
 
-    td:hover {
-      white-space: normal;
 
-      background: #1e293b;
+/* =====================================================
+   RESULTS
+===================================================== */
 
-      word-break: break-word;
-    }
+table {
+  width: 100%;
 
-    .likes-col {
-      color: #f43f5e;
+  border-collapse: collapse;
 
-      font-weight: 600;
-    }
+  margin-top: 15px;
 
-    a {
-      color: #38bdf8;
+  table-layout: fixed;
 
-      text-decoration: none;
-    }
+  background: #0f172a;
 
-    a:hover {
-      text-decoration: underline;
+  border-radius: 6px;
 
-      color: #7dd3fc;
-    }
+  overflow: hidden;
+}
 
-    /* =====================================================
-       FOOTER
-    ===================================================== */
+th,
+td {
+  text-align: left;
 
-    footer {
-      text-align: center;
+  padding: 12px;
 
-      margin-top: 40px;
+  border-bottom:
+    1px solid #334155;
 
-      padding: 20px 0;
+  font-size: 14px;
+}
 
-      font-size: 13px;
+th {
+  color: #f97316;
 
-      color: #64748b;
+  background:
+    rgba(249,115,22,0.1);
+}
 
-      border-top:
-        1px solid #1e293b;
-    }
+td {
+  overflow: hidden;
 
-    footer a {
-      color: #f97316;
+  text-overflow: ellipsis;
 
-      font-weight: 500;
-    }
+  white-space: nowrap;
+}
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
+td:hover {
+  white-space: normal;
 
-        transform:
-          translateY(-3px);
-      }
+  background: #1e293b;
 
-      to {
-        opacity: 1;
+  word-break: break-word;
+}
 
-        transform:
-          translateY(0);
-      }
-    }
+.likes-col {
+  color: #f43f5e;
 
-    /* =====================================================
-       MOBILE
-    ===================================================== */
+  font-weight: 600;
+}
 
-    @media (max-width: 600px) {
-      body {
-        margin-top: 20px;
+a {
+  color: #38bdf8;
 
-        padding:
-          0 12px;
-      }
+  text-decoration: none;
+}
 
-      .hero-banner {
-        height: 150px;
+a:hover {
+  text-decoration: underline;
 
-        padding: 15px;
-      }
+  color: #7dd3fc;
+}
 
-      .hero-banner h1 {
-        font-size: 1.6rem;
-      }
 
-      .controls {
-        flex-direction: column;
-      }
+/* =====================================================
+   FOOTER
+===================================================== */
 
-      .queue-main {
-        align-items: flex-start;
-      }
+footer {
+  text-align: center;
 
-      table {
-        font-size: 12px;
-      }
+  margin-top: 40px;
 
-      th,
-      td {
-        padding: 8px;
-      }
-    }
-  </style>
+  padding: 20px 0;
+
+  font-size: 13px;
+
+  color: #64748b;
+
+  border-top:
+    1px solid #1e293b;
+}
+
+footer a {
+  color: #f97316;
+
+  font-weight: 500;
+}
+
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  body {
+    margin-top: 20px;
+
+    padding:
+      0 12px;
+  }
+
+  .hero-banner {
+    height: 150px;
+
+    padding: 15px;
+  }
+
+  .hero-banner h1 {
+    font-size: 1.6rem;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .queue-main {
+    align-items: flex-start;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
 <div class="content-wrapper">
+
 
   <!-- =====================================================
        HERO
   ====================================================== -->
 
   <div class="hero-banner">
+
     <h1>
-      <a href="https://soundcrossfinder.github.io/">
+
+      <a
+        href="https://soundcrossfinder.github.io/"
+      >
         🎧 SoundCloud Playlist Cross-Finder
       </a>
+
     </h1>
+
   </div>
 
+
   <p class="subtitle">
+
     Discover which playlists contain multiple tracks
     from your collection.
+
   </p>
 
+
   <p class="tip">
+
     💡 <b>Pro Tip:</b>
+
     Works best with niche/indie tracks
     (under 5M plays). Very popular tracks may return
     limited results due to SoundCloud API constraints.
+
   </p>
+
 
   <!-- =====================================================
        INPUT CARD
@@ -848,7 +895,11 @@
       🎶 Input SoundCloud Tracks
     </h3>
 
+
     <div id="inputs">
+
+
+      <!-- SLOT 1 -->
 
       <div class="input-wrapper">
 
@@ -866,6 +917,9 @@
 
       </div>
 
+
+      <!-- SLOT 2 -->
+
       <div class="input-wrapper">
 
         <div class="input-group">
@@ -881,6 +935,9 @@
         <div class="preview-container"></div>
 
       </div>
+
+
+      <!-- SLOT 3 -->
 
       <div class="input-wrapper">
 
@@ -900,6 +957,7 @@
 
     </div>
 
+
     <div class="controls">
 
       <button
@@ -908,6 +966,7 @@
       >
         ➕ Add Track
       </button>
+
 
       <button
         id="search-btn"
@@ -920,8 +979,9 @@
 
   </div>
 
+
   <!-- =====================================================
-       STATUS CARD
+       STATUS
   ====================================================== -->
 
   <div
@@ -932,7 +992,9 @@
 
     <h3>
 
-      <span class="status-header-title">
+      <span
+        class="status-header-title"
+      >
 
         <span
           class="pulse-dot"
@@ -945,6 +1007,7 @@
 
       </span>
 
+
       <button
         class="card-remove-btn"
         id="cancel-btn"
@@ -955,15 +1018,21 @@
 
     </h3>
 
+
+    <!-- ===================================================
+         QUEUE
+    ==================================================== -->
+
     <div
       class="queue-panel"
       id="queue-panel"
-      style="display:none;"
+      style="display:block;"
     >
 
       <div class="queue-title">
         ⚡ Server Scan Queue
       </div>
+
 
       <div class="queue-main">
 
@@ -974,50 +1043,74 @@
           …
         </div>
 
+
         <div class="queue-info">
 
           <div
             class="queue-message"
             id="queue-message"
           >
-            Connecting to scan queue...
+            Checking scan queue...
           </div>
+
 
           <div
             class="queue-subtitle"
             id="queue-subtitle"
           >
-            Waiting for the server...
+            Connecting to the server...
           </div>
 
         </div>
 
       </div>
 
+
       <div class="queue-stats">
 
         <div class="queue-stat">
+
           🔥 Active:
-          <b id="queue-active">0</b>
+
+          <b id="queue-active">
+            0
+          </b>
+
         </div>
 
+
         <div class="queue-stat">
+
           ⏳ Waiting:
-          <b id="queue-waiting">0</b>
+
+          <b id="queue-waiting">
+            0
+          </b>
+
         </div>
 
+
         <div class="queue-stat">
+
           🚀 Capacity:
-          <b id="queue-capacity">0</b>
+
+          <b id="queue-capacity">
+            2
+          </b>
+
         </div>
 
       </div>
 
     </div>
 
-    <pre id="log">Connecting to server...</pre>
+
+    <pre id="log">
+Initializing...
+    </pre>
 
   </div>
+
 
   <!-- =====================================================
        RESULTS
@@ -1038,6 +1131,11 @@
   </div>
 
 </div>
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
 
 <footer>
 
@@ -1067,605 +1165,387 @@
 
 </footer>
 
+
 <script>
 
-  /* =======================================================
-     CONFIG
-  ======================================================= */
+/* =======================================================
+   STATE
+======================================================= */
 
-  const API_BASE =
-    'https://soundcrossfinder.duckdns.org';
+let trackCount = 3;
 
-  const SEARCH_ENDPOINT =
-    `${API_BASE}/api/search`;
+let activeAbortController =
+  null;
 
-  const QUEUE_ENDPOINT =
-    `${API_BASE}/api/queue`;
+let searchRunning = false;
 
-  /* =======================================================
-     STATE
-  ======================================================= */
+let currentJobId = null;
 
-  let trackCount = 3;
+let previewSequence = 0;
 
-  let activeAbortController = null;
 
-  let searchRunning = false;
+/* =======================================================
+   HTML ESCAPE
+======================================================= */
 
-  let currentJobId = null;
+function escapeHtml(str) {
 
-  let queuePollTimer = null;
+  return String(str || '')
 
-  let previewSequence = 0;
+    .replace(
+      /&/g,
+      '&amp;'
+    )
 
-  /* =======================================================
-     HTML ESCAPE
-  ======================================================= */
+    .replace(
+      /</g,
+      '&lt;'
+    )
 
-  function escapeHtml(str) {
-    return String(str || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
+    .replace(
+      />/g,
+      '&gt;'
+    )
 
-  /* =======================================================
-     LOG
-  ======================================================= */
+    .replace(
+      /"/g,
+      '&quot;'
+    )
 
-  function appendLog(message) {
-
-    const log =
-      document.getElementById('log');
-
-    log.textContent +=
-      message + '\n';
-
-    log.scrollTop =
-      log.scrollHeight;
-  }
-
-  /* =======================================================
-     QUEUE POLLING
-     
-     IMPORTANT:
-     The SSE connection can be buffered by a reverse proxy.
-     Therefore the frontend also polls /api/queue.
-     
-     The server queue endpoint gives the global active/waiting
-     numbers. SSE gives this particular job's position/state.
-  ======================================================= */
-
-  function startQueuePolling() {
-
-    stopQueuePolling();
-
-    updateGlobalQueue();
-
-    queuePollTimer =
-      setInterval(
-        updateGlobalQueue,
-        2000
-      );
-  }
-
-  function stopQueuePolling() {
-
-    if (queuePollTimer) {
-
-      clearInterval(
-        queuePollTimer
-      );
-
-      queuePollTimer = null;
-    }
-  }
-
-  async function updateGlobalQueue() {
-
-    if (!searchRunning) {
-      return;
-    }
-
-    try {
-
-      const response =
-        await fetch(
-          QUEUE_ENDPOINT,
-          {
-            cache: 'no-store'
-          }
-        );
-
-      if (!response.ok) {
-        return;
-      }
-
-      const data =
-        await response.json();
-
-      const panel =
-        document.getElementById(
-          'queue-panel'
-        );
-
-      panel.style.display =
-        'block';
-
-      document.getElementById(
-        'queue-active'
-      ).textContent =
-        Number(data.active || 0);
-
-      document.getElementById(
-        'queue-waiting'
-      ).textContent =
-        Number(data.waiting || 0);
-
-      document.getElementById(
-        'queue-capacity'
-      ).textContent =
-        Number(data.capacity || 0);
-
-      /*
-       * Only update the generic queue text if the
-       * individual job has not yet supplied a more
-       * specific SSE status.
-       */
-      if (!currentJobId) {
-
-        document.getElementById(
-          'queue-number'
-        ).textContent =
-          '…';
-
-        document.getElementById(
-          'queue-message'
-        ).textContent =
-          'Connecting to scan queue...';
-
-        document.getElementById(
-          'queue-subtitle'
-        ).textContent =
-          `${Number(data.active || 0)} of ` +
-          `${Number(data.capacity || 0)} scan slots are currently active.`;
-      }
-
-    } catch (error) {
-
-      /*
-       * Don't kill the search because the optional
-       * queue-status request failed.
-       */
-    }
-  }
-
-  /* =======================================================
-     QUEUE DISPLAY
-  ======================================================= */
-
-  function updateQueueDisplay(data) {
-
-    const panel =
-      document.getElementById(
-        'queue-panel'
-      );
-
-    const number =
-      document.getElementById(
-        'queue-number'
-      );
-
-    const message =
-      document.getElementById(
-        'queue-message'
-      );
-
-    const subtitle =
-      document.getElementById(
-        'queue-subtitle'
-      );
-
-    const active =
-      document.getElementById(
-        'queue-active'
-      );
-
-    const waiting =
-      document.getElementById(
-        'queue-waiting'
-      );
-
-    const capacity =
-      document.getElementById(
-        'queue-capacity'
-      );
-
-    if (!data) {
-      return;
-    }
-
-    if (data.jobId) {
-      currentJobId =
-        data.jobId;
-    }
-
-    if (
-      data.phase === 'idle'
-    ) {
-
-      panel.style.display =
-        'none';
-
-      return;
-    }
-
-    panel.style.display =
-      'block';
-
-    active.textContent =
-      Number(data.active || 0);
-
-    waiting.textContent =
-      Number(data.waiting || 0);
-
-    capacity.textContent =
-      Number(data.capacity || 0);
-
-    /* =====================================================
-       WAITING
-    ===================================================== */
-
-    if (
-      data.phase === 'waiting'
-    ) {
-
-      const position =
-        Math.max(
-          1,
-          Number(
-            data.position || 1
-          )
-        );
-
-      number.textContent =
-        position;
-
-      message.textContent =
-        data.message ||
-        '⏳ Waiting for a scan slot...';
-
-      if (
-        position === 1
-      ) {
-
-        subtitle.textContent =
-          'You are next. Your scan will start automatically when a slot opens.';
-
-      } else {
-
-        const ahead =
-          position - 1;
-
-        subtitle.textContent =
-          `There ${ahead === 1 ? 'is' : 'are'} ` +
-          `${ahead} scan${ahead === 1 ? '' : 's'} ahead of you.`;
-      }
-
-      return;
-    }
-
-    /* =====================================================
-       ACTIVE
-    ===================================================== */
-
-    if (
-      data.phase === 'active'
-    ) {
-
-      number.textContent =
-        '✓';
-
-      message.textContent =
-        data.message ||
-        '🚀 Your scan is running!';
-
-      subtitle.textContent =
-        `${Number(data.active || 0)} of ` +
-        `${Number(data.capacity || 0)} scan slots are currently in use.`;
-
-      return;
-    }
-
-    /* =====================================================
-       CHECKING
-    ===================================================== */
-
-    if (
-      data.phase === 'checking'
-    ) {
-
-      number.textContent =
-        '…';
-
-      message.textContent =
-        data.message ||
-        'Checking scan queue...';
-
-      subtitle.textContent =
-        `${Number(data.active || 0)} of ` +
-        `${Number(data.capacity || 0)} scan slots are currently active.`;
-
-      return;
-    }
-  }
-
-  /* =======================================================
-     CANCEL SEARCH
-  ======================================================= */
-
-  async function cancelSearch() {
-
-    const jobId =
-      currentJobId;
-
-    if (
-      activeAbortController
-    ) {
-
-      activeAbortController.abort();
-
-      activeAbortController =
-        null;
-    }
-
-    if (jobId) {
-
-      try {
-
-        await fetch(
-          `${API_BASE}/api/search/${encodeURIComponent(jobId)}/cancel`,
-          {
-            method: 'POST'
-          }
-        );
-
-      } catch {}
-    }
-
-    searchRunning =
-      false;
-
-    currentJobId =
-      null;
-
-    stopQueuePolling();
-
-    document.getElementById(
-      'cancel-btn'
-    ).style.display =
-      'none';
-
-    document.getElementById(
-      'search-btn'
-    ).disabled =
-      false;
-
-    appendLog(
-      '\n⏹️ Search canceled.'
+    .replace(
+      /'/g,
+      '&#039;'
     );
 
-    updateQueueDisplay({
-      phase: 'idle'
-    });
+}
+
+
+/* =======================================================
+   CANCEL SEARCH
+======================================================= */
+
+async function cancelSearch() {
+
+  if (
+    !searchRunning
+  ) {
+    return;
   }
 
-  /* =======================================================
-     TRACK PREVIEW
-  ======================================================= */
+  const jobId =
+    currentJobId;
 
-  async function handleInputChange(
-    inputEl
+  if (
+    activeAbortController
   ) {
 
-    const wrapper =
-      inputEl.closest(
-        '.input-wrapper'
-      );
+    activeAbortController.abort();
 
-    const inputGroup =
-      wrapper.querySelector(
-        '.input-group'
-      );
+    activeAbortController =
+      null;
+  }
 
-    const previewEl =
-      wrapper.querySelector(
-        '.preview-container'
-      );
-
-    const url =
-      inputEl.value.trim();
-
-    if (
-      !url ||
-      !url.includes(
-        'soundcloud.com'
-      )
-    ) {
-
-      previewEl.innerHTML =
-        '';
-
-      inputEl.dataset.lastUrl =
-        '';
-
-      inputGroup.style.display =
-        'flex';
-
-      return;
-    }
-
-    if (
-      inputEl.dataset.lastUrl ===
-      url
-    ) {
-      return;
-    }
-
-    const requestId =
-      ++previewSequence;
-
-    inputEl.dataset.lastUrl =
-      url;
-
-    previewEl.innerHTML =
-      '<div class="preview-loading">⏳ Loading track info...</div>';
+  if (jobId) {
 
     try {
 
-      const controller =
-        new AbortController();
+      await fetch(
+        `https://soundcrossfinder.duckdns.org/api/search/${encodeURIComponent(jobId)}/cancel`,
+        {
+          method: 'POST'
+        }
+      );
 
-      const timeout =
-        setTimeout(
-          () => controller.abort(),
-          20000
-        );
+    } catch {}
 
-      const response =
-        await fetch(
-          `https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(url)}`,
-          {
-            signal:
-              controller.signal
-          }
-        );
+  }
 
-      clearTimeout(timeout);
+  searchRunning = false;
 
-      if (
-        requestId !==
-        previewSequence
-      ) {
-        return;
-      }
+  currentJobId = null;
 
-      if (!response.ok) {
-        throw new Error(
-          'Track not found'
-        );
-      }
+  document.getElementById(
+    'cancel-btn'
+  ).style.display =
+    'none';
 
-      const data =
-        await response.json();
+  document.getElementById(
+    'search-btn'
+  ).disabled =
+    false;
 
-      inputGroup.style.display =
-        'none';
+  updateQueueDisplay({
+    phase: 'idle'
+  });
 
-      previewEl.innerHTML = `
+  appendLog(
+    '\n⏹️ Search canceled.'
+  );
 
-        <div class="track-card">
+}
 
-          <div class="track-main-info">
 
-            <img
-              src="${escapeHtml(
-                data.thumbnail_url ||
-                'https://soundcloud.com/favicon.ico'
-              )}"
-              alt="Artwork"
-              class="track-thumb"
-              onerror="this.style.display='none'"
-            >
+/* =======================================================
+   TRACK PREVIEW
+======================================================= */
 
-            <div class="track-details">
+async function handleInputChange(
+  inputEl
+) {
 
-              <div class="track-name">
-                ${escapeHtml(
-                  data.title ||
-                  'Unknown Track'
-                )}
-              </div>
+  const wrapper =
+    inputEl.closest(
+      '.input-wrapper'
+    );
 
-              <div class="track-artist">
-                by ${escapeHtml(
-                  data.author_name ||
-                  'SoundCloud Artist'
-                )}
-              </div>
+  const inputGroup =
+    wrapper.querySelector(
+      '.input-group'
+    );
 
+  const previewEl =
+    wrapper.querySelector(
+      '.preview-container'
+    );
+
+  const url =
+    inputEl.value.trim();
+
+  if (
+    !url ||
+    !url.includes(
+      'soundcloud.com'
+    )
+  ) {
+
+    previewEl.innerHTML =
+      '';
+
+    inputEl.dataset.lastUrl =
+      '';
+
+    inputGroup.style.display =
+      'flex';
+
+    return;
+  }
+
+  if (
+    inputEl.dataset.lastUrl ===
+    url
+  ) {
+    return;
+  }
+
+  const requestId =
+    ++previewSequence;
+
+  inputEl.dataset.lastUrl =
+    url;
+
+  previewEl.innerHTML =
+    '<div class="preview-loading">⏳ Loading track info...</div>';
+
+  try {
+
+    const controller =
+      new AbortController();
+
+    const timeout =
+      setTimeout(
+        () => controller.abort(),
+        20000
+      );
+
+    const response =
+      await fetch(
+        `https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(url)}`,
+        {
+          signal:
+            controller.signal
+        }
+      );
+
+    clearTimeout(timeout);
+
+    if (
+      requestId !==
+      previewSequence
+    ) {
+      return;
+    }
+
+    if (
+      !response.ok
+    ) {
+      throw new Error(
+        'Track not found'
+      );
+    }
+
+    const data =
+      await response.json();
+
+    inputGroup.style.display =
+      'none';
+
+    previewEl.innerHTML = `
+
+      <div class="track-card">
+
+        <div class="track-main-info">
+
+          <img
+            src="${escapeHtml(
+              data.thumbnail_url ||
+              'https://soundcloud.com/favicon.ico'
+            )}"
+            alt="Artwork"
+            class="track-thumb"
+            onerror="this.style.display='none'"
+          >
+
+          <div class="track-details">
+
+            <div class="track-name">
+              ${escapeHtml(
+                data.title ||
+                'Unknown Track'
+              )}
+            </div>
+
+            <div class="track-artist">
+              by ${escapeHtml(
+                data.author_name ||
+                'SoundCloud Artist'
+              )}
             </div>
 
           </div>
 
-          <button
-            class="card-remove-btn"
-            onclick="handleRemoveSlot(this)"
-          >
-            ✕
-          </button>
-
         </div>
-      `;
 
-    } catch (error) {
+        <button
+          class="card-remove-btn"
+          onclick="handleRemoveSlot(this)"
+        >
+          ✕
+        </button>
 
-      if (
-        error.name ===
-        'AbortError'
-      ) {
+      </div>
 
-        previewEl.innerHTML =
-          '<div class="preview-error">⚠️ Track preview timed out.</div>';
+    `;
 
-      } else {
+  } catch (error) {
 
-        previewEl.innerHTML =
-          '<div class="preview-error">⚠️ Could not load track preview.</div>';
-      }
+    if (
+      error.name ===
+      'AbortError'
+    ) {
+
+      previewEl.innerHTML =
+        '<div class="preview-error">⚠️ Track preview timed out.</div>';
+
+    } else {
+
+      previewEl.innerHTML =
+        '<div class="preview-error">⚠️ Could not load track preview.</div>';
+
     }
+
   }
 
-  /* =======================================================
-     REMOVE TRACK SLOT
-  ======================================================= */
+}
 
-  function handleRemoveSlot(
-    btnEl
+
+/* =======================================================
+   REMOVE TRACK SLOT
+======================================================= */
+
+function handleRemoveSlot(
+  btnEl
+) {
+
+  const wrapper =
+    btnEl.closest(
+      '.input-wrapper'
+    );
+
+  const total =
+    document.querySelectorAll(
+      '#inputs .input-wrapper'
+    ).length;
+
+  if (
+    total > 3
   ) {
 
-    const wrapper =
-      btnEl.closest(
-        '.input-wrapper'
-      );
+    wrapper.remove();
 
-    const total =
-      document.querySelectorAll(
-        '#inputs .input-wrapper'
-      ).length;
+    return;
+  }
 
-    if (total > 3) {
+  const input =
+    wrapper.querySelector(
+      'input[type="text"]'
+    );
 
-      wrapper.remove();
+  const inputGroup =
+    wrapper.querySelector(
+      '.input-group'
+    );
 
-      return;
-    }
+  const preview =
+    wrapper.querySelector(
+      '.preview-container'
+    );
+
+  input.value =
+    '';
+
+  input.dataset.lastUrl =
+    '';
+
+  preview.innerHTML =
+    '';
+
+  inputGroup.style.display =
+    'flex';
+
+  input.focus();
+
+}
+
+
+/* =======================================================
+   REMOVE RAW INPUT
+======================================================= */
+
+function handleRemoveRawInput(
+  btnEl
+) {
+
+  const total =
+    document.querySelectorAll(
+      '#inputs .input-wrapper'
+    ).length;
+
+  const wrapper =
+    btnEl.closest(
+      '.input-wrapper'
+    );
+
+  if (
+    total > 3
+  ) {
+
+    wrapper.remove();
+
+  } else {
 
     const input =
       wrapper.querySelector(
         'input[type="text"]'
-      );
-
-    const inputGroup =
-      wrapper.querySelector(
-        '.input-group'
-      );
-
-    const preview =
-      wrapper.querySelector(
-        '.preview-container'
       );
 
     input.value =
@@ -1673,1110 +1553,1568 @@
 
     input.dataset.lastUrl =
       '';
-
-    preview.innerHTML =
-      '';
-
-    inputGroup.style.display =
-      'flex';
-
-    input.focus();
   }
 
-  function handleRemoveRawInput(
-    btnEl
+}
+
+
+/* =======================================================
+   ADD TRACK
+======================================================= */
+
+function addTrackInput(
+  initialValue = ''
+) {
+
+  trackCount++;
+
+  const inputsDiv =
+    document.getElementById(
+      'inputs'
+    );
+
+  const wrapper =
+    document.createElement(
+      'div'
+    );
+
+  wrapper.className =
+    'input-wrapper';
+
+  wrapper.innerHTML = `
+
+    <div class="input-group">
+
+      <input
+        type="text"
+        placeholder="Paste SoundCloud track URL ${trackCount}"
+        value="${escapeHtml(initialValue)}"
+        oninput="handleInputChange(this)"
+      >
+
+      <button
+        class="remove-btn"
+        onclick="handleRemoveRawInput(this)"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <div class="preview-container"></div>
+
+  `;
+
+  inputsDiv.appendChild(
+    wrapper
+  );
+
+  return wrapper.querySelector(
+    'input'
+  );
+
+}
+
+
+/* =======================================================
+   QUEUE DISPLAY
+======================================================= */
+
+function updateQueueDisplay(
+  data
+) {
+
+  if (!data) {
+    return;
+  }
+
+  const panel =
+    document.getElementById(
+      'queue-panel'
+    );
+
+  const number =
+    document.getElementById(
+      'queue-number'
+    );
+
+  const message =
+    document.getElementById(
+      'queue-message'
+    );
+
+  const subtitle =
+    document.getElementById(
+      'queue-subtitle'
+    );
+
+  const active =
+    document.getElementById(
+      'queue-active'
+    );
+
+  const waiting =
+    document.getElementById(
+      'queue-waiting'
+    );
+
+  const capacity =
+    document.getElementById(
+      'queue-capacity'
+    );
+
+
+  /* =====================================================
+     ALWAYS USE SERVER VALUES
+  ===================================================== */
+
+  if (
+    data.active !== undefined
   ) {
 
-    const total =
-      document.querySelectorAll(
-        '#inputs .input-wrapper'
-      ).length;
-
-    const wrapper =
-      btnEl.closest(
-        '.input-wrapper'
+    active.textContent =
+      Number(
+        data.active
       );
 
-    if (total > 3) {
+  }
 
-      wrapper.remove();
+
+  if (
+    data.waiting !== undefined
+  ) {
+
+    waiting.textContent =
+      Number(
+        data.waiting
+      );
+
+  }
+
+
+  if (
+    data.capacity !== undefined
+  ) {
+
+    capacity.textContent =
+      Number(
+        data.capacity
+      );
+
+  }
+
+
+  /* =====================================================
+     IDLE
+  ===================================================== */
+
+  if (
+    data.phase ===
+    'idle'
+  ) {
+
+    panel.style.display =
+      'none';
+
+    return;
+  }
+
+
+  /* =====================================================
+     ACTIVE / WAITING / CHECKING
+  ===================================================== */
+
+  panel.style.display =
+    'block';
+
+
+  /* =====================================================
+     WAITING
+  ===================================================== */
+
+  if (
+    data.phase ===
+    'waiting'
+  ) {
+
+    const position =
+      Number(
+        data.position || 1
+      );
+
+    number.textContent =
+      position;
+
+    message.textContent =
+      '⏳ Waiting for a scan slot...';
+
+
+    if (
+      position <= 1
+    ) {
+
+      subtitle.textContent =
+        'You are next. Your scan will start automatically when a slot opens.';
 
     } else {
 
-      const input =
-        wrapper.querySelector(
-          'input[type="text"]'
-        );
+      subtitle.textContent =
+        `There ${
+          position - 1 === 1
+            ? 'is'
+            : 'are'
+        } ${
+          position - 1
+        } scan${
+          position - 1 === 1
+            ? ''
+            : 's'
+        } ahead of you.`;
 
-      const inputGroup =
-        wrapper.querySelector(
-          '.input-group'
-        );
-
-      const preview =
-        wrapper.querySelector(
-          '.preview-container'
-        );
-
-      input.value =
-        '';
-
-      input.dataset.lastUrl =
-        '';
-
-      preview.innerHTML =
-        '';
-
-      inputGroup.style.display =
-        'flex';
     }
+
+    return;
   }
 
-  /* =======================================================
-     ADD TRACK INPUT
-  ======================================================= */
 
-  function addTrackInput(
-    initialValue = ''
+  /* =====================================================
+     ACTIVE
+  ===================================================== */
+
+  if (
+    data.phase ===
+    'active'
   ) {
 
-    trackCount++;
+    number.textContent =
+      '✓';
+
+    message.textContent =
+      '🚀 Your scan is running!';
+
+    subtitle.textContent =
+      `${Number(data.active || 0)} of ${
+        Number(data.capacity || 0)
+      } scan slots are currently in use.`;
+
+    return;
+  }
+
+
+  /* =====================================================
+     CHECKING
+  ===================================================== */
+
+  if (
+    data.phase ===
+    'checking'
+  ) {
+
+    number.textContent =
+      '…';
+
+    message.textContent =
+      data.message ||
+      'Checking scan queue...';
+
+    subtitle.textContent =
+      `${Number(data.active || 0)} of ${
+        Number(data.capacity || 0)
+      } scan slots are currently active.`;
+
+  }
+
+}
+
+
+/* =======================================================
+   LOG
+======================================================= */
+
+function appendLog(
+  message
+) {
+
+  const log =
+    document.getElementById(
+      'log'
+    );
+
+  log.textContent +=
+    message +
+    '\n';
+
+  log.scrollTop =
+    log.scrollHeight;
+
+}
+
+
+/* =======================================================
+   START SEARCH
+======================================================= */
+
+async function startSearch() {
+
+  if (
+    searchRunning
+  ) {
+    return;
+  }
+
+
+  const inputs =
+    document.querySelectorAll(
+      '#inputs input[type="text"]'
+    );
+
+
+  const trackUrls =
+    Array.from(inputs)
+
+      .map(
+        input =>
+          input.value.trim()
+      )
+
+      .filter(Boolean);
+
+
+  if (
+    trackUrls.length ===
+    0
+  ) {
+
+    alert(
+      'Please enter at least one track URL.'
+    );
+
+    return;
+  }
+
+
+  if (
+    trackUrls.length >
+    20
+  ) {
+
+    alert(
+      'Maximum 20 tracks are allowed.'
+    );
+
+    return;
+  }
+
+
+  if (
+    activeAbortController
+  ) {
+
+    activeAbortController.abort();
+
+  }
+
+
+  activeAbortController =
+    new AbortController();
+
+  searchRunning =
+    true;
+
+  currentJobId =
+    null;
+
+
+  /* =====================================================
+     URL
+  ===================================================== */
+
+  const urlParams =
+    new URLSearchParams();
+
+
+  trackUrls.forEach(
+    (url, index) => {
+
+      urlParams.set(
+        `t${index + 1}`,
+        url
+      );
+
+    }
+  );
+
+
+  window.history.pushState(
+    null,
+    '',
+    window.location.pathname +
+    '?' +
+    urlParams.toString()
+  );
+
+
+  /* =====================================================
+     UI
+  ===================================================== */
+
+  document.getElementById(
+    'status-card'
+  ).style.display =
+    'block';
+
+
+  document.getElementById(
+    'results-card'
+  ).style.display =
+    'none';
+
+
+  document.getElementById(
+    'cancel-btn'
+  ).style.display =
+    'inline-block';
+
+
+  document.getElementById(
+    'search-btn'
+  ).disabled =
+    true;
+
+
+  const log =
+    document.getElementById(
+      'log'
+    );
+
+
+  log.textContent =
+    'Connecting to server queue...\n';
+
+
+  /*
+   * Do NOT show 0 / 0 / 0.
+   *
+   * The backend default is 2.
+   */
+  updateQueueDisplay({
+    phase:
+      'checking',
+
+    active:
+      0,
+
+    waiting:
+      0,
+
+    capacity:
+      2,
+
+    position:
+      null,
+
+    message:
+      'Connecting to server queue...'
+  });
+
+
+  setTimeout(
+    () => {
+
+      document.getElementById(
+        'status-card'
+      ).scrollIntoView({
+        behavior:
+          'smooth',
+
+        block:
+          'start'
+      });
+
+    },
+    100
+  );
+
+
+  try {
+
+    const response =
+      await fetch(
+        'https://soundcrossfinder.duckdns.org/api/search',
+        {
+          method:
+            'POST',
+
+          headers: {
+            'Content-Type':
+              'application/json'
+          },
+
+          body:
+            JSON.stringify({
+              trackUrls
+            }),
+
+          signal:
+            activeAbortController
+              .signal
+        }
+      );
+
+
+    if (
+      !response.ok
+    ) {
+
+      let message =
+        `HTTP ${response.status}`;
+
+      try {
+
+        const errorData =
+          await response.json();
+
+        if (
+          errorData.error
+        ) {
+          message =
+            errorData.error;
+        }
+
+      } catch {}
+
+
+      appendLog(
+        `❌ ${message}`
+      );
+
+      return;
+    }
+
+
+    if (
+      !response.body
+    ) {
+
+      throw new Error(
+        'Server did not provide a streaming response.'
+      );
+
+    }
+
+
+    /* ===================================================
+       STREAM
+    =================================================== */
+
+    const reader =
+      response.body.getReader();
+
+    const decoder =
+      new TextDecoder();
+
+    let buffer =
+      '';
+
+
+    const resultsData = {
+      common: [],
+
+      partial: [],
+
+      trackCount: 0
+    };
+
+
+    while (true) {
+
+      const {
+        value,
+        done
+      } =
+        await reader.read();
+
+
+      if (
+        done
+      ) {
+        break;
+      }
+
+
+      buffer +=
+        decoder.decode(
+          value,
+          {
+            stream:
+              true
+          }
+        );
+
+
+      const events =
+        buffer.split(
+          '\n\n'
+        );
+
+
+      buffer =
+        events.pop() ||
+        '';
+
+
+      for (
+        let eventBlock
+        of events
+      ) {
+
+        eventBlock =
+          eventBlock.trim();
+
+
+        if (
+          !eventBlock
+        ) {
+          continue;
+        }
+
+
+        const lines =
+          eventBlock.split(
+            '\n'
+          );
+
+
+        for (
+          let line
+          of lines
+        ) {
+
+          line =
+            line.trim();
+
+
+          if (
+            line.startsWith(':')
+          ) {
+            continue;
+          }
+
+
+          if (
+            !line.startsWith(
+              'data:'
+            )
+          ) {
+            continue;
+          }
+
+
+          const jsonStr =
+            line
+              .replace(
+                /^data:\s*/,
+                ''
+              )
+              .trim();
+
+
+          if (
+            !jsonStr
+          ) {
+            continue;
+          }
+
+
+          try {
+
+            const data =
+              JSON.parse(
+                jsonStr
+              );
+
+
+            if (
+              data.status ===
+              'job'
+            ) {
+
+              currentJobId =
+                data.jobId ||
+                null;
+
+            }
+
+
+            handleServerEvent(
+              data,
+              resultsData
+            );
+
+
+          } catch (error) {
+
+            console.error(
+              'SSE JSON parse error:',
+              error
+            );
+
+          }
+
+        }
+
+      }
+
+    }
+
+
+    /*
+     * Handle final buffered event.
+     */
+    if (
+      buffer.trim()
+    ) {
+
+      const lines =
+        buffer
+          .trim()
+          .split(
+            '\n'
+          );
+
+
+      for (
+        let line
+        of lines
+      ) {
+
+        line =
+          line.trim();
+
+
+        if (
+          !line.startsWith(
+            'data:'
+          )
+        ) {
+          continue;
+        }
+
+
+        try {
+
+          const data =
+            JSON.parse(
+              line
+                .replace(
+                  /^data:\s*/,
+                  ''
+                )
+                .trim()
+            );
+
+
+          if (
+            data.status ===
+            'job'
+          ) {
+
+            currentJobId =
+              data.jobId ||
+              null;
+
+          }
+
+
+          handleServerEvent(
+            data,
+            resultsData
+          );
+
+
+        } catch {}
+
+      }
+
+    }
+
+
+  } catch (error) {
+
+    if (
+      error.name ===
+      'AbortError'
+    ) {
+
+      /*
+       * cancelSearch() already wrote
+       * the cancellation message.
+       */
+
+    } else {
+
+      appendLog(
+        `❌ Network Error: ${error.message}`
+      );
+
+    }
+
+  } finally {
+
+    searchRunning =
+      false;
+
+    activeAbortController =
+      null;
+
+    currentJobId =
+      null;
+
+    document.getElementById(
+      'cancel-btn'
+    ).style.display =
+      'none';
+
+    document.getElementById(
+      'search-btn'
+    ).disabled =
+      false;
+
+  }
+
+}
+
+
+/* =======================================================
+   SERVER EVENTS
+======================================================= */
+
+function handleServerEvent(
+  data,
+  resultsData
+) {
+
+
+  /* =====================================================
+     JOB
+  ===================================================== */
+
+  if (
+    data.status ===
+    'job'
+  ) {
+
+    currentJobId =
+      data.jobId ||
+      currentJobId;
+
+    return;
+  }
+
+
+  /* =====================================================
+     QUEUE
+  ===================================================== */
+
+  if (
+    data.status ===
+    'queue'
+  ) {
+
+    updateQueueDisplay(
+      data
+    );
+
+    return;
+  }
+
+
+  /* =====================================================
+     PROGRESS
+  ===================================================== */
+
+  if (
+    data.status ===
+    'progress'
+  ) {
+
+    appendLog(
+      data.message ||
+      ''
+    );
+
+    return;
+  }
+
+
+  /* =====================================================
+     META
+  ===================================================== */
+
+  if (
+    data.status ===
+    'results-meta'
+  ) {
+
+    resultsData.common =
+      [];
+
+    resultsData.partial =
+      [];
+
+    resultsData.trackCount =
+      data.resolvedTracksCount ||
+      0;
+
+
+    if (
+      data.diagnostics
+    ) {
+
+      appendLog(
+        `📊 API diagnostics: ` +
+        `${data.diagnostics.totalRequests || 0} requests, ` +
+        `${data.diagnostics.rateLimited || 0} rate limits, ` +
+        `${data.diagnostics.timeouts || 0} timeouts.`
+      );
+
+    }
+
+    return;
+  }
+
+
+  /* =====================================================
+     COMMON
+  ===================================================== */
+
+  if (
+    data.status ===
+    'results-common'
+  ) {
+
+    if (
+      Array.isArray(
+        data.items
+      )
+    ) {
+
+      resultsData.common.push(
+        ...data.items
+      );
+
+    }
+
+    return;
+  }
+
+
+  /* =====================================================
+     PARTIAL
+  ===================================================== */
+
+  if (
+    data.status ===
+    'results-partial'
+  ) {
+
+    if (
+      Array.isArray(
+        data.items
+      )
+    ) {
+
+      resultsData.partial.push(
+        ...data.items
+      );
+
+    }
+
+    return;
+  }
+
+
+  /* =====================================================
+     COMPLETE
+  ===================================================== */
+
+  if (
+    data.status ===
+    'complete'
+  ) {
+
+    appendLog(
+      '\n✅ DONE! Rendering final results...'
+    );
+
+
+    updateQueueDisplay({
+      phase:
+        'idle'
+    });
+
+
+    setTimeout(
+      () => {
+
+        renderResults(
+          resultsData
+        );
+
+      },
+      100
+    );
+
+
+    return;
+  }
+
+
+  /* =====================================================
+     ERROR
+  ===================================================== */
+
+  if (
+    data.status ===
+    'error'
+  ) {
+
+    appendLog(
+      `❌ Error: ${
+        data.message ||
+        'Unknown error'
+      }`
+    );
+
+    return;
+  }
+
+}
+
+
+/* =======================================================
+   RENDER RESULTS
+======================================================= */
+
+function renderResults(
+  data
+) {
+
+  document.getElementById(
+    'status-card'
+  ).style.display =
+    'none';
+
+
+  document.getElementById(
+    'results-card'
+  ).style.display =
+    'block';
+
+
+  const container =
+    document.getElementById(
+      'results-content'
+    );
+
+
+  const getLikes =
+    playlist =>
+      Number(
+        playlist.likes_count ??
+        playlist.favoritings_count ??
+        playlist.likes ??
+        playlist.likesCount ??
+        playlist.like_count ??
+        playlist.favorites_count ??
+        0
+      );
+
+
+  data.common.sort(
+    (a, b) =>
+      getLikes(b) -
+      getLikes(a)
+  );
+
+
+  data.partial.sort(
+    (a, b) => {
+
+      if (
+        (b.count || 0) !==
+        (a.count || 0)
+      ) {
+
+        return (
+          (b.count || 0) -
+          (a.count || 0)
+        );
+
+      }
+
+
+      return (
+        getLikes(b) -
+        getLikes(a)
+      );
+
+    }
+  );
+
+
+  let html = `
+
+    <h4
+      style="color:#10b981;"
+    >
+      🏆 Complete Matches
+      (${data.common.length}
+      playlists contain ALL
+      ${data.trackCount}
+      tracks):
+    </h4>
+
+  `;
+
+
+  if (
+    data.common.length >
+    0
+  ) {
+
+    html += `
+
+      <table>
+
+        <tr>
+
+          <th>
+            Title
+          </th>
+
+          <th>
+            Curator
+          </th>
+
+          <th>
+            Likes
+          </th>
+
+          <th>
+            Link
+          </th>
+
+        </tr>
+
+    `;
+
+
+    data.common.forEach(
+      playlist => {
+
+        const title =
+          escapeHtml(
+            playlist.title
+          );
+
+
+        const user =
+          escapeHtml(
+            playlist.user ||
+            'Unknown'
+          );
+
+
+        const url =
+          escapeHtml(
+            playlist.url ||
+            ''
+          );
+
+
+        const likes =
+          getLikes(
+            playlist
+          ).toLocaleString();
+
+
+        html += `
+
+          <tr>
+
+            <td
+              title="${title}"
+            >
+              ${title}
+            </td>
+
+            <td>
+              ${user}
+            </td>
+
+            <td
+              class="likes-col"
+            >
+              ❤️ ${likes}
+            </td>
+
+            <td>
+
+              ${
+                url
+                  ? `<a
+                      href="${url}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open ↗
+                    </a>`
+                  : '—'
+              }
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+      </table>
+    `;
+
+
+  } else {
+
+    html += `
+
+      <p
+        style="color:#94a3b8;"
+      >
+        No playlists contain all
+        selected tracks together.
+      </p>
+
+    `;
+
+  }
+
+
+  /* =====================================================
+     PARTIAL
+  ===================================================== */
+
+  html += `
+
+    <h4
+      style="
+        margin-top:25px;
+        color:#facc15;
+      "
+    >
+
+      ⚡ Partial Matches
+      (${data.partial.length}
+      playlists feature some tracks):
+
+    </h4>
+
+  `;
+
+
+  if (
+    data.partial.length >
+    0
+  ) {
+
+    html += `
+
+      <table>
+
+        <tr>
+
+          <th>
+            Title
+          </th>
+
+          <th>
+            Matches
+          </th>
+
+          <th>
+            Likes
+          </th>
+
+          <th>
+            Curator
+          </th>
+
+          <th>
+            Link
+          </th>
+
+        </tr>
+
+    `;
+
+
+    data.partial.forEach(
+      playlist => {
+
+        const title =
+          escapeHtml(
+            playlist.title
+          );
+
+
+        const user =
+          escapeHtml(
+            playlist.user ||
+            'Unknown'
+          );
+
+
+        const url =
+          escapeHtml(
+            playlist.url ||
+            ''
+          );
+
+
+        const likes =
+          getLikes(
+            playlist
+          ).toLocaleString();
+
+
+        html += `
+
+          <tr>
+
+            <td
+              title="${title}"
+            >
+              ${title}
+            </td>
+
+            <td>
+
+              <b>
+                ${Number(
+                  playlist.count ||
+                  0
+                )}
+              </b>
+
+              /
+              ${data.trackCount}
+
+            </td>
+
+            <td
+              class="likes-col"
+            >
+              ❤️ ${likes}
+            </td>
+
+            <td>
+              ${user}
+            </td>
+
+            <td>
+
+              ${
+                url
+                  ? `<a
+                      href="${url}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open ↗
+                    </a>`
+                  : '—'
+              }
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+      </table>
+    `;
+
+
+  } else {
+
+    html += `
+
+      <p
+        style="color:#94a3b8;"
+      >
+        No partial overlaps found.
+      </p>
+
+    `;
+
+  }
+
+
+  container.innerHTML =
+    html;
+
+
+  setTimeout(
+    () => {
+
+      document.getElementById(
+        'results-card'
+      ).scrollIntoView({
+        behavior:
+          'smooth',
+
+        block:
+          'start'
+      });
+
+    },
+    100
+  );
+
+}
+
+
+/* =======================================================
+   LOAD SHAREABLE URL
+======================================================= */
+
+window.addEventListener(
+  'DOMContentLoaded',
+  async () => {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const trackUrls =
+      [];
+
+
+    let i = 1;
+
+
+    while (
+      params.has(
+        `t${i}`
+      )
+    ) {
+
+      const value =
+        (
+          params.get(
+            `t${i}`
+          ) || ''
+        ).trim();
+
+
+      if (
+        value
+      ) {
+
+        trackUrls.push(
+          value
+        );
+
+      }
+
+
+      i++;
+
+    }
+
+
+    if (
+      trackUrls.length ===
+      0
+    ) {
+
+      return;
+
+    }
+
 
     const inputsDiv =
       document.getElementById(
         'inputs'
       );
 
-    const wrapper =
-      document.createElement(
-        'div'
+
+    inputsDiv.innerHTML =
+      '';
+
+
+    trackCount =
+      0;
+
+
+    const slots =
+      Math.max(
+        3,
+        trackUrls.length
       );
 
-    wrapper.className =
-      'input-wrapper';
-
-    wrapper.innerHTML = `
-
-      <div class="input-group">
-
-        <input
-          type="text"
-          placeholder="Paste SoundCloud track URL ${trackCount}"
-          value="${escapeHtml(initialValue)}"
-          oninput="handleInputChange(this)"
-        >
-
-        <button
-          class="remove-btn"
-          onclick="handleRemoveRawInput(this)"
-        >
-          ✕
-        </button>
-
-      </div>
-
-      <div class="preview-container"></div>
-    `;
-
-    inputsDiv.appendChild(
-      wrapper
-    );
-
-    return wrapper.querySelector(
-      'input'
-    );
-  }
-
-  /* =======================================================
-     START SEARCH
-  ======================================================= */
-
-  async function startSearch() {
-
-    if (searchRunning) {
-      return;
-    }
-
-    const inputs =
-      document.querySelectorAll(
-        '#inputs input[type="text"]'
-      );
-
-    const trackUrls =
-      Array.from(inputs)
-        .map(
-          input =>
-            input.value.trim()
-        )
-        .filter(Boolean);
-
-    if (
-      trackUrls.length === 0
-    ) {
-
-      alert(
-        'Please enter at least one track URL.'
-      );
-
-      return;
-    }
-
-    if (
-      trackUrls.length > 20
-    ) {
-
-      alert(
-        'Maximum 20 tracks are allowed.'
-      );
-
-      return;
-    }
-
-    if (
-      activeAbortController
-    ) {
-
-      activeAbortController.abort();
-    }
-
-    activeAbortController =
-      new AbortController();
-
-    searchRunning =
-      true;
-
-    currentJobId =
-      null;
-
-    /* =====================================================
-       UPDATE URL
-    ===================================================== */
-
-    const urlParams =
-      new URLSearchParams();
-
-    trackUrls.forEach(
-      (url, index) => {
-
-        urlParams.set(
-          `t${index + 1}`,
-          url
-        );
-      }
-    );
-
-    window.history.pushState(
-      null,
-      '',
-      window.location.pathname +
-      '?' +
-      urlParams.toString()
-    );
-
-    /* =====================================================
-       UI
-    ===================================================== */
-
-    document.getElementById(
-      'status-card'
-    ).style.display =
-      'block';
-
-    document.getElementById(
-      'results-card'
-    ).style.display =
-      'none';
-
-    document.getElementById(
-      'cancel-btn'
-    ).style.display =
-      'inline-block';
-
-    document.getElementById(
-      'search-btn'
-    ).disabled =
-      true;
-
-    document.getElementById(
-      'log'
-    ).textContent =
-      'Connecting to server...\n';
-
-    updateQueueDisplay({
-      phase: 'checking',
-
-      active: 0,
-
-      waiting: 0,
-
-      capacity: 0,
-
-      position: null,
-
-      message:
-        'Checking scan queue...'
-    });
-
-    /*
-     * Start polling immediately.
-     *
-     * This is the important part that makes the queue
-     * visible even when SSE events are buffered.
-     */
-    startQueuePolling();
-
-    setTimeout(
-      () => {
-
-        document.getElementById(
-          'status-card'
-        ).scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-
-      },
-      100
-    );
-
-    try {
-
-      /* ===================================================
-         POST REQUEST
-      =================================================== */
-
-      const response =
-        await fetch(
-          SEARCH_ENDPOINT,
-          {
-            method: 'POST',
-
-            headers: {
-              'Content-Type':
-                'application/json',
-
-              'Accept':
-                'text/event-stream'
-            },
-
-            body:
-              JSON.stringify({
-                trackUrls
-              }),
-
-            signal:
-              activeAbortController.signal
-          }
-        );
-
-      if (!response.ok) {
-
-        let errorMessage =
-          `HTTP Error: ${response.status} ${response.statusText}`;
-
-        try {
-
-          const errorData =
-            await response.json();
-
-          if (
-            errorData?.error
-          ) {
-
-            errorMessage =
-              errorData.error;
-          }
-
-        } catch {}
-
-        appendLog(
-          `❌ ${errorMessage}`
-        );
-
-        return;
-      }
-
-      if (!response.body) {
-
-        throw new Error(
-          'Server did not provide a streaming response.'
-        );
-      }
-
-      /* ===================================================
-         STREAM
-      =================================================== */
-
-      const reader =
-        response.body.getReader();
-
-      const decoder =
-        new TextDecoder();
-
-      let buffer =
-        '';
-
-      const resultsData = {
-        common: [],
-        partial: [],
-        trackCount: 0
-      };
-
-      while (true) {
-
-        const {
-          value,
-          done
-        } =
-          await reader.read();
-
-        if (done) {
-          break;
-        }
-
-        buffer +=
-          decoder.decode(
-            value,
-            {
-              stream: true
-            }
-          );
-
-        const events =
-          buffer.split(
-            /\r?\n\r?\n/
-          );
-
-        buffer =
-          events.pop() || '';
-
-        for (
-          const eventBlock
-          of events
-        ) {
-
-          processSSEBlock(
-            eventBlock,
-            resultsData
-          );
-        }
-      }
-
-      /*
-       * Process a final complete event if one remains.
-       */
-      if (
-        buffer.trim()
-      ) {
-
-        processSSEBlock(
-          buffer,
-          resultsData
-        );
-      }
-
-    } catch (error) {
-
-      if (
-        error.name ===
-        'AbortError'
-      ) {
-
-        appendLog(
-          '\n⏹️ Search canceled.'
-        );
-
-      } else {
-
-        appendLog(
-          `❌ Network Error: ${error.message}`
-        );
-      }
-
-    } finally {
-
-      searchRunning =
-        false;
-
-      activeAbortController =
-        null;
-
-      stopQueuePolling();
-
-      document.getElementById(
-        'cancel-btn'
-      ).style.display =
-        'none';
-
-      document.getElementById(
-        'search-btn'
-      ).disabled =
-        false;
-
-      currentJobId =
-        null;
-    }
-  }
-
-  /* =======================================================
-     PROCESS SSE BLOCK
-  ======================================================= */
-
-  function processSSEBlock(
-    eventBlock,
-    resultsData
-  ) {
-
-    const lines =
-      eventBlock.split(
-        /\r?\n/
-      );
-
-    let dataLines = [];
 
     for (
-      const line
-      of lines
+      let idx = 0;
+      idx < slots;
+      idx++
     ) {
 
-      if (
-        line.startsWith(':')
-      ) {
-        continue;
-      }
-
-      if (
-        line.startsWith('data:')
-      ) {
-
-        dataLines.push(
-          line.replace(
-            /^data:\s?/,
-            ''
-          )
-        );
-      }
-    }
-
-    if (
-      !dataLines.length
-    ) {
-      return;
-    }
-
-    try {
-
-      const data =
-        JSON.parse(
-          dataLines.join('\n')
-        );
-
-      handleServerEvent(
-        data,
-        resultsData
-      );
-
-    } catch (error) {
-
-      console.error(
-        'SSE JSON parse error:',
-        error
-      );
-    }
-  }
-
-  /* =======================================================
-     HANDLE SERVER EVENTS
-  ======================================================= */
-
-  function handleServerEvent(
-    data,
-    resultsData
-  ) {
-
-    /* =====================================================
-       JOB ID
-    ===================================================== */
-
-    if (
-      data.status === 'job'
-    ) {
-
-      currentJobId =
-        data.jobId || null;
-
-      return;
-    }
-
-    /* =====================================================
-       QUEUE
-    ===================================================== */
-
-    if (
-      data.status === 'queue'
-    ) {
-
-      updateQueueDisplay(
-        data
-      );
-
-      return;
-    }
-
-    /* =====================================================
-       PROGRESS
-    ===================================================== */
-
-    if (
-      data.status === 'progress'
-    ) {
-
-      appendLog(
-        data.message || ''
-      );
-
-      return;
-    }
-
-    /* =====================================================
-       RESULTS META
-    ===================================================== */
-
-    if (
-      data.status === 'results-meta'
-    ) {
-
-      resultsData.common =
-        [];
-
-      resultsData.partial =
-        [];
-
-      resultsData.trackCount =
-        data.resolvedTracksCount ||
-        0;
-
-      if (
-        data.diagnostics
-      ) {
-
-        appendLog(
-          `📊 API diagnostics: ` +
-          `${data.diagnostics.totalRequests || 0} requests, ` +
-          `${data.diagnostics.rateLimited || 0} rate limits, ` +
-          `${data.diagnostics.timeouts || 0} timeouts.`
-        );
-      }
-
-      return;
-    }
-
-    /* =====================================================
-       COMMON RESULTS
-    ===================================================== */
-
-    if (
-      data.status === 'results-common'
-    ) {
-
-      if (
-        Array.isArray(
-          data.items
-        )
-      ) {
-
-        resultsData.common.push(
-          ...data.items
-        );
-      }
-
-      return;
-    }
-
-    /* =====================================================
-       PARTIAL RESULTS
-    ===================================================== */
-
-    if (
-      data.status === 'results-partial'
-    ) {
-
-      if (
-        Array.isArray(
-          data.items
-        )
-      ) {
-
-        resultsData.partial.push(
-          ...data.items
-        );
-      }
-
-      return;
-    }
-
-    /* =====================================================
-       COMPLETE
-    ===================================================== */
-
-    if (
-      data.status === 'complete'
-    ) {
-
-      appendLog(
-        '\n✅ DONE! Rendering final results...'
-      );
-
-      updateQueueDisplay({
-        phase: 'idle'
-      });
-
-      setTimeout(
-        () => {
-
-          renderResults(
-            resultsData
-          );
-
-        },
-        100
-      );
-
-      return;
-    }
-
-    /* =====================================================
-       ERROR
-    ===================================================== */
-
-    if (
-      data.status === 'error'
-    ) {
-
-      appendLog(
-        `❌ Error: ${data.message || 'Unknown error'}`
-      );
-
-      return;
-    }
-  }
-
-  /* =======================================================
-     RENDER RESULTS
-  ======================================================= */
-
-  function renderResults(
-    data
-  ) {
-
-    document.getElementById(
-      'status-card'
-    ).style.display =
-      'none';
-
-    document.getElementById(
-      'results-card'
-    ).style.display =
-      'block';
-
-    const container =
-      document.getElementById(
-        'results-content'
-      );
-
-    const getLikes =
-      playlist =>
-        Number(
-          playlist.likes_count ??
-          playlist.favoritings_count ??
-          playlist.likes ??
-          playlist.likesCount ??
-          playlist.like_count ??
-          playlist.favorites_count ??
-          0
-        );
-
-    data.common.sort(
-      (a, b) =>
-        getLikes(b) -
-        getLikes(a)
-    );
-
-    data.partial.sort(
-      (a, b) => {
-
-        if (
-          (b.count || 0) !==
-          (a.count || 0)
-        ) {
-
-          return (
-            (b.count || 0) -
-            (a.count || 0)
-          );
-        }
-
-        return (
-          getLikes(b) -
-          getLikes(a)
-        );
-      }
-    );
-
-    let html = `
-
-      <h4
-        style="color:#10b981;"
-      >
-        🏆 Complete Matches
-        (${data.common.length}
-        playlists contain ALL
-        ${data.trackCount}
-        tracks):
-      </h4>
-    `;
-
-    if (
-      data.common.length > 0
-    ) {
-
-      html += `
-
-        <table>
-
-          <tr>
-            <th>Title</th>
-            <th>Curator</th>
-            <th>Likes</th>
-            <th>Link</th>
-          </tr>
-      `;
-
-      data.common.forEach(
-        playlist => {
-
-          const title =
-            escapeHtml(
-              playlist.title
-            );
-
-          const user =
-            escapeHtml(
-              playlist.user ||
-              'Unknown'
-            );
-
-          const url =
-            escapeHtml(
-              playlist.url ||
-              ''
-            );
-
-          const likes =
-            getLikes(
-              playlist
-            ).toLocaleString();
-
-          html += `
-
-            <tr>
-
-              <td
-                title="${title}"
-              >
-                ${title}
-              </td>
-
-              <td>
-                ${user}
-              </td>
-
-              <td
-                class="likes-col"
-              >
-                ❤️ ${likes}
-              </td>
-
-              <td>
-                ${
-                  url
-                    ? `<a
-                        href="${url}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Open ↗
-                      </a>`
-                    : '—'
-                }
-              </td>
-
-            </tr>
-          `;
-        }
-      );
-
-      html += `
-        </table>
-      `;
-
-    } else {
-
-      html += `
-
-        <p
-          style="color:#94a3b8;"
-        >
-          No playlists contain all
-          selected tracks together.
-        </p>
-      `;
-    }
-
-    /* =====================================================
-       PARTIAL
-    ===================================================== */
-
-    html += `
-
-      <h4
-        style="
-          margin-top:25px;
-          color:#facc15;
-        "
-      >
-        ⚡ Partial Matches
-        (${data.partial.length}
-        playlists feature some tracks):
-      </h4>
-    `;
-
-    if (
-      data.partial.length > 0
-    ) {
-
-      html += `
-
-        <table>
-
-          <tr>
-
-            <th>Title</th>
-
-            <th>Matches</th>
-
-            <th>Likes</th>
-
-            <th>Curator</th>
-
-            <th>Link</th>
-
-          </tr>
-      `;
-
-      data.partial.forEach(
-        playlist => {
-
-          const title =
-            escapeHtml(
-              playlist.title
-            );
-
-          const user =
-            escapeHtml(
-              playlist.user ||
-              'Unknown'
-            );
-
-          const url =
-            escapeHtml(
-              playlist.url ||
-              ''
-            );
-
-          const likes =
-            getLikes(
-              playlist
-            ).toLocaleString();
-
-          html += `
-
-            <tr>
-
-              <td
-                title="${title}"
-              >
-                ${title}
-              </td>
-
-              <td>
-                <b>
-                  ${Number(
-                    playlist.count || 0
-                  )}
-                </b>
-                /
-                ${data.trackCount}
-              </td>
-
-              <td
-                class="likes-col"
-              >
-                ❤️ ${likes}
-              </td>
-
-              <td>
-                ${user}
-              </td>
-
-              <td>
-
-                ${
-                  url
-                    ? `<a
-                        href="${url}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Open ↗
-                      </a>`
-                    : '—'
-                }
-
-              </td>
-
-            </tr>
-          `;
-        }
-      );
-
-      html += `
-        </table>
-      `;
-
-    } else {
-
-      html += `
-
-        <p
-          style="color:#94a3b8;"
-        >
-          No partial overlaps found.
-        </p>
-      `;
-    }
-
-    container.innerHTML =
-      html;
-
-    setTimeout(
-      () => {
-
-        document.getElementById(
-          'results-card'
-        ).scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-
-      },
-      100
-    );
-  }
-
-  /* =======================================================
-     LOAD SHAREABLE URL
-  ======================================================= */
-
-  window.addEventListener(
-    'DOMContentLoaded',
-    async () => {
-
-      const params =
-        new URLSearchParams(
-          window.location.search
-        );
-
-      const trackUrls =
-        [];
-
-      let i = 1;
-
-      while (
-        params.has(`t${i}`)
-      ) {
-
-        const value =
-          (
-            params.get(
-              `t${i}`
-            ) || ''
-          ).trim();
-
-        if (value) {
-
-          trackUrls.push(
-            value
-          );
-        }
-
-        i++;
-      }
-
-      if (
-        trackUrls.length === 0
-      ) {
-        return;
-      }
-
-      const inputsDiv =
-        document.getElementById(
-          'inputs'
-        );
-
-      inputsDiv.innerHTML =
+      const value =
+        trackUrls[idx] ||
         '';
 
-      trackCount =
-        0;
 
-      const slots =
-        Math.max(
-          3,
-          trackUrls.length
+      const input =
+        addTrackInput(
+          value
         );
 
-      for (
-        let idx = 0;
-        idx < slots;
-        idx++
+
+      if (
+        value
       ) {
 
-        const value =
-          trackUrls[idx] ||
-          '';
+        handleInputChange(
+          input
+        );
 
-        const input =
-          addTrackInput(
-            value
-          );
-
-        if (value) {
-
-          handleInputChange(
-            input
-          );
-        }
       }
 
-      setTimeout(
-        () => startSearch(),
-        500
-      );
     }
-  );
+
+
+    setTimeout(
+      () => startSearch(),
+      500
+    );
+
+  }
+);
 
 </script>
 
 </body>
+
 </html>
