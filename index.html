@@ -63,18 +63,35 @@
     .track-card {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 12px;
       background: #0f172a;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin-top: 6px;
+      padding: 10px 14px;
+      border-radius: 8px;
       border: 1px solid #f97316;
       animation: fadeIn 0.2s ease-in-out;
     }
-    .track-thumb { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; background: #1e293b; }
+    .track-main-info { display: flex; align-items: center; gap: 12px; flex: 1; overflow: hidden; }
+    .track-thumb { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; background: #1e293b; flex-shrink: 0; }
     .track-details { flex: 1; overflow: hidden; }
-    .track-name { font-weight: 600; font-size: 13px; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .track-artist { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .track-name { font-weight: 600; font-size: 14px; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .track-artist { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+    
+    .card-remove-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+      transition: background 0.2s;
+      flex-shrink: 0;
+      width: auto;
+    }
+    .card-remove-btn:hover { background: #dc2626; }
+
     .preview-loading { font-size: 12px; color: #f97316; margin-top: 4px; padding-left: 4px; }
     .preview-error { font-size: 12px; color: #ef4444; margin-top: 4px; padding-left: 4px; }
 
@@ -126,15 +143,22 @@
     <div class="card">
       <h3>🎶 Input SoundCloud Tracks</h3>
       <div id="inputs">
+        <!-- 3 Default Input Slots -->
         <div class="input-wrapper">
           <div class="input-group">
-            <input type="text" placeholder="Paste SoundCloud track URL (e.g., https://soundcloud.com/artist/song-name)" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+            <input type="text" placeholder="Paste SoundCloud track URL 1" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
           </div>
           <div class="preview-container"></div>
         </div>
         <div class="input-wrapper">
           <div class="input-group">
-            <input type="text" placeholder="Paste SoundCloud track URL (e.g., https://soundcloud.com/artist/song-name)" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+            <input type="text" placeholder="Paste SoundCloud track URL 2" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+          </div>
+          <div class="preview-container"></div>
+        </div>
+        <div class="input-wrapper">
+          <div class="input-group">
+            <input type="text" placeholder="Paste SoundCloud track URL 3" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
           </div>
           <div class="preview-container"></div>
         </div>
@@ -166,11 +190,12 @@
   </footer>
 
 <script>
-  let trackCount = 2;
+  let trackCount = 3;
 
   // Track Preview via SoundCloud oEmbed
   async function handleInputChange(inputEl) {
     const wrapper = inputEl.closest('.input-wrapper');
+    const inputGroup = wrapper.querySelector('.input-group');
     const previewEl = wrapper.querySelector('.preview-container');
     const url = inputEl.value.trim();
 
@@ -190,17 +215,55 @@
       if (!res.ok) throw new Error('Track not found');
       const data = await res.json();
 
+      // Hide raw URL box and replace with Track Card
+      inputGroup.style.display = 'none';
       previewEl.innerHTML = `
         <div class="track-card">
-          <img src="${data.thumbnail_url || 'https://soundcloud.com/favicon.ico'}" alt="Artwork" class="track-thumb" onerror="this.style.display='none'">
-          <div class="track-details">
-            <div class="track-name">${escapeHtml(data.title || 'Unknown Track')}</div>
-            <div class="track-artist">by ${escapeHtml(data.author_name || 'SoundCloud Artist')}</div>
+          <div class="track-main-info">
+            <img src="${data.thumbnail_url || 'https://soundcloud.com/favicon.ico'}" alt="Artwork" class="track-thumb" onerror="this.style.display='none'">
+            <div class="track-details">
+              <div class="track-name">${escapeHtml(data.title || 'Unknown Track')}</div>
+              <div class="track-artist">by ${escapeHtml(data.author_name || 'SoundCloud Artist')}</div>
+            </div>
           </div>
+          <button class="card-remove-btn" onclick="handleRemoveSlot(this)">✕</button>
         </div>
       `;
     } catch (e) {
       previewEl.innerHTML = '<div class="preview-error">⚠️ Could not load track preview</div>';
+    }
+  }
+
+  // Smart Remove: Keeps minimum 3 slots alive
+  function handleRemoveSlot(btnEl) {
+    const wrapper = btnEl.closest('.input-wrapper');
+    const totalWrappers = document.querySelectorAll('#inputs .input-wrapper').length;
+
+    if (totalWrappers > 3) {
+      // If more than 3 slots exist, remove the slot completely
+      wrapper.remove();
+    } else {
+      // If 3 or fewer slots exist, clear card & show empty URL box
+      const inputGroup = wrapper.querySelector('.input-group');
+      const previewEl = wrapper.querySelector('.preview-container');
+      const inputEl = wrapper.querySelector('input[type="text"]');
+
+      previewEl.innerHTML = '';
+      inputEl.value = '';
+      delete inputEl.dataset.lastUrl;
+      inputGroup.style.display = 'flex';
+      inputEl.focus();
+    }
+  }
+
+  function handleRemoveRawInput(btnEl) {
+    const totalWrappers = document.querySelectorAll('#inputs .input-wrapper').length;
+    if (totalWrappers > 3) {
+      btnEl.closest('.input-wrapper').remove();
+    } else {
+      const inputEl = btnEl.closest('.input-wrapper').querySelector('input[type="text"]');
+      inputEl.value = '';
+      delete inputEl.dataset.lastUrl;
     }
   }
 
@@ -211,8 +274,8 @@
     wrapper.className = 'input-wrapper';
     wrapper.innerHTML = `
       <div class="input-group">
-        <input type="text" placeholder="Track URL ${trackCount}" value="${escapeHtml(initialValue)}" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
-        <button class="remove-btn" onclick="this.closest('.input-wrapper').remove();">✕</button>
+        <input type="text" placeholder="Paste SoundCloud track URL ${trackCount}" value="${escapeHtml(initialValue)}" onchange="handleInputChange(this)" onblur="handleInputChange(this)">
+        <button class="remove-btn" onclick="handleRemoveRawInput(this)">✕</button>
       </div>
       <div class="preview-container"></div>
     `;
@@ -236,9 +299,12 @@
       inputsDiv.innerHTML = '';
       trackCount = 0;
 
-      for (let idx = 0; idx < trackUrls.length; idx++) {
-        const input = addTrackInput(trackUrls[idx]);
-        handleInputChange(input);
+      // Ensure at least 3 input wrappers exist
+      const slotsToCreate = Math.max(3, trackUrls.length);
+      for (let idx = 0; idx < slotsToCreate; idx++) {
+        const val = trackUrls[idx] || '';
+        const input = addTrackInput(val);
+        if (val) handleInputChange(input);
       }
       
       startSearch();
