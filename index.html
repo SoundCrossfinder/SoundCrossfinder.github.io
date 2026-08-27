@@ -229,12 +229,10 @@
     previewEl.innerHTML = '<div class="preview-loading">⏳ Loading track info...</div>';
 
     try {
-      // Outgoing SoundCloud request with 40-second timeout guard
       const res = await fetchWithTimeout(`https://soundcloud.com/oembed?format=json&url=${encodeURIComponent(url)}`, { timeout: 40000 });
       if (!res.ok) throw new Error('Track not found');
       const data = await res.json();
 
-      // Hide raw URL box and replace with Track Card instantly
       inputGroup.style.display = 'none';
       previewEl.innerHTML = `
         <div class="track-card">
@@ -340,7 +338,7 @@
       return;
     }
 
-    // Update Shareable URL params (?t1=url1&t2=url2)
+    // Update Shareable URL params
     const urlParams = new URLSearchParams();
     trackUrls.forEach((url, index) => {
       urlParams.set(`t${index + 1}`, url);
@@ -348,7 +346,6 @@
     const newRelativePathQuery = window.location.pathname + '?' + urlParams.toString();
     window.history.pushState(null, '', newRelativePathQuery);
 
-    // Make Live Status visible again on new search
     document.getElementById('status-card').style.display = 'block';
     document.getElementById('results-card').style.display = 'none';
     const logEl = document.getElementById('log');
@@ -438,13 +435,12 @@
   }
 
   function renderResults(data) {
-    // Hide status card once search is complete
     document.getElementById('status-card').style.display = 'none';
     document.getElementById('results-card').style.display = 'block';
     const container = document.getElementById('results-content');
 
-    // Safe accessor for likes count across various potential field names
-    const getLikes = p => p.likes ?? p.likes_count ?? p.likesCount ?? 0;
+    // Comprehensive fallback for SoundCloud like/favorite count properties
+    const getLikes = p => Number(p.likes_count ?? p.favoritings_count ?? p.likes ?? p.likesCount ?? p.like_count ?? p.favorites_count ?? 0);
 
     // Sort complete matches: Highest likes first
     data.common.sort((a, b) => getLikes(b) - getLikes(a));
