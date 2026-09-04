@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +17,21 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="SoundCloud Playlist Cross-Finder">
   <meta name="twitter:description" content="Discover which playlists contain multiple tracks from your collection.">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/SoundCrossfinder/SoundCrossfinder.github.io/refs/heads/main/favicon.png">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/SoundCrossfinder/SoundCrossFinder.github.io/refs/heads/main/favicon.png">
   <title>SoundCloud Playlist Cross-Finder</title>
+
+  <!-- Lightweight first-party analytics beacon -->
+  <script>
+    (function () {
+      var q = new URLSearchParams({
+        p: location.pathname,
+        r: document.referrer,
+        t: document.title
+      });
+
+      (new Image()).src = "https://scfstats.duckdns.org/hit?" + q.toString();
+    })();
+  </script>
 
   <style>
     * { box-sizing: border-box; }
@@ -428,3 +442,4 @@
 </script>
 </body>
 </html>
+```
