@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +24,18 @@
   <title>SoundCloud Playlist Cross-Finder</title>
 
   <!-- GoatCounter Analytics -->
+  <script>
+    window.goatcounter = {
+      path: function() {
+        return window.location.pathname || "/";
+      }
+    };
+  </script>
+
   <script
     data-goatcounter="https://soundcrossfinder-analytics.duckdns.org/count"
     async
-    src="https://gc.zgo.at/count.js">
+    src="/analytics.js">
   </script>
 
   <style>
@@ -662,25 +671,6 @@
   let currentJobId = null;
   let previewSequence = 0;
 
-  /*
-   * ============================================================
-   * GOATCOUNTER ANALYTICS
-   * ============================================================
-   *
-   * Standard pageviews are handled automatically by GoatCounter.
-   *
-   * Custom events:
-   *
-   *   search_started
-   *   search_completed_with_results
-   *   search_completed_no_results
-   *   search_error
-   *
-   * No SoundCloud URLs, track names, or user search inputs
-   * are sent to GoatCounter.
-   * ============================================================
-   */
-
   function trackEvent(eventName, title = eventName) {
     try {
       if (
@@ -1066,23 +1056,10 @@
       );
     }
 
-
-    /*
-     * ============================================================
-     * ANALYTICS: SEARCH STARTED
-     * ============================================================
-     *
-     * We only count this after the input has passed validation.
-     *
-     * We deliberately do NOT send the actual track URLs.
-     * ============================================================
-     */
-
     trackEvent(
       "search_started",
       `Cross-search started (${trackUrls.length} tracks)`
     );
-
 
     if (activeAbortController) {
       activeAbortController.abort();
@@ -1114,7 +1091,6 @@
         urlParams.toString()
     );
 
-
     document.getElementById(
       "status-card"
     ).style.display = "block";
@@ -1131,7 +1107,6 @@
       "search-btn"
     ).disabled = true;
 
-
     updateQueueDisplay({
       phase: "checking",
       active: null,
@@ -1142,12 +1117,10 @@
         "Connecting to server queue..."
     });
 
-
     document.getElementById(
       "log"
     ).textContent =
       "Connecting to server queue...\n";
-
 
     setTimeout(() => {
       document
@@ -1157,7 +1130,6 @@
           block: "start"
         });
     }, 100);
-
 
     try {
       const response =
@@ -1185,7 +1157,6 @@
           }
         );
 
-
       if (!response.ok) {
         let errorText =
           `HTTP Error: ${response.status}`;
@@ -1200,11 +1171,6 @@
           }
         } catch {}
 
-        /*
-         * Analytics:
-         * The search was started but the server
-         * returned an HTTP error.
-         */
         trackEvent(
           "search_error",
           "Search HTTP error"
@@ -1215,13 +1181,11 @@
         );
       }
 
-
       if (!response.body) {
         throw new Error(
           "Server did not provide a streaming response."
         );
       }
-
 
       const reader =
         response.body.getReader();
@@ -1242,7 +1206,6 @@
           timeouts: 0
         }
       };
-
 
       while (true) {
         const {
@@ -1274,7 +1237,6 @@
           );
         }
       }
-
 
       buffer += decoder.decode();
 
@@ -1371,7 +1333,6 @@
   ) {
     if (!data) return;
 
-
     if (data.status === "job") {
       currentJobId =
         data.jobId || null;
@@ -1379,18 +1340,15 @@
       return;
     }
 
-
     if (data.status === "queue") {
       return updateQueueDisplay(data);
     }
-
 
     if (data.status === "progress") {
       return appendLog(
         data.message || ""
       );
     }
-
 
     if (
       data.status === "results-meta"
@@ -1463,11 +1421,6 @@
     } else if (
       data.status === "error"
     ) {
-
-      /*
-       * Analytics:
-       * The server explicitly reported a search error.
-       */
       trackEvent(
         "search_error",
         "Search server error"
@@ -1484,44 +1437,21 @@
 
 
   function renderResults(data) {
-
-    /*
-     * ============================================================
-     * ANALYTICS: FINAL SEARCH RESULT
-     * ============================================================
-     *
-     * Count the final result only once we have the complete
-     * result set.
-     *
-     * A "result" means either:
-     *
-     *   - Complete playlist match
-     *   - Partial playlist match
-     *
-     * We do not send the playlist names or URLs.
-     * ============================================================
-     */
-
     const totalResults =
       data.common.length +
       data.partial.length;
 
-
     if (totalResults > 0) {
-
       trackEvent(
         "search_completed_with_results",
         `Search returned results (${totalResults} playlists)`
       );
-
     } else {
-
       trackEvent(
         "search_completed_no_results",
         "Search returned no results"
       );
     }
-
 
     document.getElementById(
       "status-card"
@@ -1536,7 +1466,6 @@
         "results-content"
       );
 
-
     const getLikes = playlist =>
       Number(
         playlist.likes_count ??
@@ -1548,13 +1477,11 @@
         0
       );
 
-
     data.common.sort(
       (a, b) =>
         getLikes(b) -
         getLikes(a)
     );
-
 
     data.partial.sort(
       (a, b) =>
@@ -1568,7 +1495,6 @@
             getLikes(a)
     );
 
-
     let html = `
       <h4 style="color:#10b981;">
         🏆 Complete Matches
@@ -1581,11 +1507,9 @@
       </h4>
     `;
 
-
     if (
       data.common.length > 0
     ) {
-
       html += `
         <table>
           <tr>
@@ -1595,7 +1519,6 @@
             <th>Link</th>
           </tr>
       `;
-
 
       data.common.forEach(
         playlist => {
@@ -1621,7 +1544,6 @@
             getLikes(
               playlist
             ).toLocaleString();
-
 
           html += `
             <tr>
@@ -1657,18 +1579,15 @@
         }
       );
 
-
       html += `</table>`;
 
     } else {
-
       html += `
         <p style="color:#94a3b8;">
           No playlists contain all selected tracks together.
         </p>
       `;
     }
-
 
     html += `
       <h4
@@ -1680,11 +1599,9 @@
       </h4>
     `;
 
-
     if (
       data.partial.length > 0
     ) {
-
       html += `
         <table>
           <tr>
@@ -1695,7 +1612,6 @@
             <th>Link</th>
           </tr>
       `;
-
 
       data.partial.forEach(
         playlist => {
@@ -1721,7 +1637,6 @@
             getLikes(
               playlist
             ).toLocaleString();
-
 
           html += `
             <tr>
@@ -1767,11 +1682,9 @@
         }
       );
 
-
       html += `</table>`;
 
     } else {
-
       html += `
         <p style="color:#94a3b8;">
           No partial overlaps found.
@@ -1779,9 +1692,7 @@
       `;
     }
 
-
     container.innerHTML = html;
-
 
     setTimeout(
       () =>
@@ -1811,7 +1722,6 @@
 
       let i = 1;
 
-
       while (
         params.has(`t${i}`)
       ) {
@@ -1829,28 +1739,23 @@
         i++;
       }
 
-
       if (
         trackUrls.length === 0
       ) {
         return;
       }
 
-
       document.getElementById(
         "inputs"
       ).innerHTML = "";
 
-
       trackCount = 0;
-
 
       const slots =
         Math.max(
           3,
           trackUrls.length
         );
-
 
       for (
         let idx = 0;
@@ -1861,16 +1766,13 @@
         const value =
           trackUrls[idx] || "";
 
-
         const input =
           addTrackInput(value);
-
 
         if (value) {
           handleInputChange(input);
         }
       }
-
 
       setTimeout(
         () => startSearch(),
@@ -1882,3 +1784,4 @@
 
 </body>
 </html>
+```
