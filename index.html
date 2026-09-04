@@ -214,8 +214,17 @@
       if (requestId !== previewSequence) return;
       if (!response.ok) throw new Error("Track not found");
       const data = await response.json();
+      const artist = data.author_name || "SoundCloud Artist";
+      let title = data.title || "Unknown Track";
+
+      // SoundCloud oEmbed titles sometimes already include "by Artist".
+      // Remove that suffix so the artist is shown only once below the title.
+      const escapedArtist = artist.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&");
+      const suffix = new RegExp(`\\s+by\\s+${escapedArtist}$`, "i");
+      title = title.replace(suffix, "").trim();
+
       inputGroup.style.display = "none";
-      previewEl.innerHTML = `<div class="track-card"><div class="track-main-info"><img src="${escapeHtml(data.thumbnail_url || "https://soundcloud.com/favicon.ico")}" alt="Artwork" class="track-thumb" onerror="this.style.display='none'"><div class="track-details"><div class="track-name">${escapeHtml(data.title || "Unknown Track")}</div><div class="track-artist">by ${escapeHtml(data.author_name || "SoundCloud Artist")}</div></div></div><button class="card-remove-btn" onclick="handleRemoveSlot(this)">✕</button></div>`;
+      previewEl.innerHTML = `<div class="track-card"><div class="track-main-info"><img src="${escapeHtml(data.thumbnail_url || "https://soundcloud.com/favicon.ico")}" alt="Artwork" class="track-thumb" onerror="this.style.display='none'"><div class="track-details"><div class="track-name">${escapeHtml(title)}</div><div class="track-artist">by ${escapeHtml(artist)}</div></div></div><button class="card-remove-btn" onclick="handleRemoveSlot(this)">✕</button></div>`;
     } catch (error) {
       if (error.name === "AbortError") previewEl.innerHTML = '<div class="preview-error">⚠️ Track preview timed out.</div>';
       else previewEl.innerHTML = '<div class="preview-error">⚠️ Could not load track preview.</div>';
